@@ -1,0 +1,45 @@
+{
+  "name": "EDUPASS",
+  "version": "0.1.0",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "axios": "^1.7.2",
+    "axios-cookiejar-support": "^5.0.2",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "js-cookie": "^3.0.5",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "sweetalert2": "^11.11.1",
+    "tailwindcss": "^3.4.4",
+    "tough-cookie": "^4.1.4",
+    "util": "^0.12.5",
+    "vue": "^3.4.27",
+    "vue-avatar-cropper": "^6.1.1",
+    "vue-jwt-decode": "^0.1.0",
+    "vue-meta": "^3.0.0-alpha.7",
+    "vue-router": "^4.0.13",
+    "vue3-carousel": "^0.3.3",
+    "vue3-loading-overlay": "^0.0.0",
+    "vuex": "^4.0.0",
+    "webpack": "^5.93.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "@vue/test-utils": "^2.0.0-rc.18",
+    "prettier": "^3.0.0-alpha.6"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "start:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d",
+    "stop:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml down",
+    "start:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d",
+    "stop:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down"
+  }
+}
