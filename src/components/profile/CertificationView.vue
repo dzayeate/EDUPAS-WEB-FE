@@ -2,18 +2,18 @@
   <div class="y-6">
     <div class="py-6">
       <div class="flex justify-between items-center">
-        <h3 class="text-lg font-semibold mb-2">Education</h3>
+        <h3 class="text-lg font-semibold mb-2">Kompetisi</h3>
         <img
           @click="showModalProfile = true"
           :src="require('@/assets/icons/icon-edit.svg')"
           alt="Edit"
-          class="cursor-pointer"
+          class="cursor-pointer w-7"
         />
       </div>
-      <h4 class="text-md mb-4">Kompetisi</h4>
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center" v-if="certificate">
         <CardView v-for="i in 3" :key="i" />
       </div>
+      <div v-else></div>
     </div>
   </div>
 </template>
@@ -24,6 +24,11 @@ export default {
   components: {
     CardView,
   },
+  data() {
+    return {
+        certificate: ""
+    }
+  }
 };
 </script>
 

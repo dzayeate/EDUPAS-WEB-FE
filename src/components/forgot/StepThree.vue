@@ -196,8 +196,8 @@
 <script>
 import HeaderView from "@/components/header/HeaderView.vue";
 import Loading from "vue3-loading-overlay";
-import { GET_USER_EMAIL } from "@/store/user.module";
-import { POST_REGISTER } from "@/store/auth.module";
+// import { GET_USER_EMAIL } from "@/store/user.module";
+// import { POST_REGISTER } from "@/store/auth.module";
 import Swal from "sweetalert2";
 
 export default {
@@ -286,7 +286,7 @@ export default {
       const params = { email: this.data.email };
       if (this.data.email != "") {
         this.isLoading = true;
-        await this.$store.dispatch(GET_USER_EMAIL, params);
+        // await this.$store.dispatch(GET_USER_EMAIL, params);
         if (this.userEmail) {
           Swal.fire({
             title: "Warning",
@@ -297,7 +297,7 @@ export default {
             this.isUrlCopied = false;
           }, 2000);
         } else {
-          await this.$store.dispatch(POST_REGISTER, this.data);
+        //   await this.$store.dispatch(POST_REGISTER, this.data);
           Swal.fire({
             title: "Success",
             text: "Email registered successfully.",

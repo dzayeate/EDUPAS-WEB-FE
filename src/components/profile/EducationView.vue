@@ -7,14 +7,17 @@
           @click="$emit('showModalEducation')"
           :src="require('@/assets/icons/icon-edit.svg')"
           alt="Edit"
-          class="cursor-pointer"
+          class="cursor-pointer w-7"
         />
       </div>
-      <h4 class="text-md mb-4">Perguruan Tinggi</h4>
-      <EducationCard
-        institution="UNIVERSITAS PASUNDAN"
-        degree="S1 Teknik Informatika"
-      />
+      <div v-if="education">
+          <h4 class="text-md mb-4">Perguruan Tinggi</h4>
+          <EducationCard
+            institution="UNIVERSITAS PASUNDAN"
+            degree="S1 Teknik Informatika"
+          />
+      </div>
+      <div v-else></div>
     </div>
   </div>
 </template>
@@ -26,6 +29,11 @@ export default {
   components: {
     EducationCard,
   },
+  data() {
+    return {
+        education: ""
+    }
+  }
 };
 </script>
 

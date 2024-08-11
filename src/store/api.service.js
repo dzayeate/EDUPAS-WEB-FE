@@ -13,6 +13,7 @@ const ApiService = {
     });
 
     this.setHeader();
+    this.addInterceptors();
   },
 
   setHeader() {
@@ -20,6 +21,21 @@ const ApiService = {
     if (token) {
       this.api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
+  },
+
+  addInterceptors() {
+    this.api.interceptors.request.use(
+      (config) => {
+        const token = JwtService.getToken();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        } 
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
   },
 
   query(resource, params) {
@@ -31,7 +47,7 @@ const ApiService = {
 
   async get(resource, params) {
     if (params && params.session) {
-    //   axiosCookieJarSupport(this.api);
+      //   axiosCookieJarSupport(this.api);
       const cookieJar = new CookieJar();
       return this.api.get(`${resource}`, {
         jar: cookieJar,
@@ -57,7 +73,7 @@ const ApiService = {
 
   upload(resource, params) {
     let formData = new FormData();
-    formData.append("file", params);
+    formData.append("proof", params);
     return this.api.post(`${resource}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

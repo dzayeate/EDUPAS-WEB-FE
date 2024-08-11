@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white w-full h-[100vh] overflow-x-auto px-[84px] py-[24px]">
+  <div class="bg-white w-full h-[100vh] overflow-x-auto p-14">
     <div class="w-full px-[24px] md:px-0">
       <div>
         <h2
@@ -8,7 +8,7 @@
           TERM AND CONDITION
         </h2>
       </div>
-      <div class="text-justify">
+      <div class="text-justify text-sm">
         <p class="mb-[8px]">
           Here are some of the key sections that are commonly included in terms
           and conditions agreements:
@@ -79,24 +79,11 @@
           </li>
         </ul>
       </div>
-      <div class="flex justify-between items-center">
-        <div class="flex items-center">
-          <input
-            id="link-checkbox"
-            type="checkbox"
-            v-model="data.isAgree"
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
-          />
-          <label
-            for="link-checkbox"
-            class="ms-2 text-sm font-medium text-gray-900 cursor-pointer"
-            >I agree.</label
-          >
-        </div>
+      <div class="flex justify-end items-center pt-5">
         <button
           type="button"
           class="bg-[#4C4DDC] text-white py-[6px] px-[16px] rounded-[6px] hover:opacity-[0.8] cursor-pointer"
-          @click="showThermsHandler"
+          @click="goBack"
         >
           Kembali
         </button>
@@ -113,48 +100,36 @@ export default {
       titleTemplate: "EduPass - %s",
     };
   },
-  props: {
-    email: String,
-    password: String,
-    confirmPassword: String,
-    roleName: String,
-    isAgree: Boolean,
-    status: Object,
-  },
+  
   data() {
     return {
       isLoading: false,
-      showPassword: false,
-      passwordStrength: "",
-      emailCorrected: "",
-      passwordConfirmed: "",
-      data: {
-        email: "",
-        password: "",
-        confirmPassword: "",
-        isAgree: false,
-        roleName: "umum",
-      },
+    //   showPassword: false,
+    //   passwordStrength: "",
+    //   emailCorrected: "",
+    //   passwordConfirmed: "",
+    //   data: {
+    //     email: "",
+    //     password: "",
+    //     confirmPassword: "",
+    //     isAgree: false,
+    //     roleName: "umum",
+    //   },
     };
   },
-  mounted() {
-    this.data.email = this.email;
-    this.data.password = this.password;
-    this.data.confirmPassword = this.confirmPassword;
-    this.data.roleName = this.roleName;
-    this.data.isAgree = this.isAgree;
-    this.passwordStrength = this.status.passwordStrength;
-    this.emailCorrected = this.status.emailCorrected;
-    this.passwordConfirmed = this.status.passwordConfirmed;
-  },
+//   mounted() {
+//     this.data.email = this.email;
+//     this.data.password = this.password;
+//     this.data.confirmPassword = this.confirmPassword;
+//     this.data.roleName = this.roleName;
+//     this.data.isAgree = this.isAgree;
+//     this.passwordStrength = this.status.passwordStrength;
+//     this.emailCorrected = this.status.emailCorrected;
+//     this.passwordConfirmed = this.status.passwordConfirmed;
+//   },
   methods: {
-    showThermsHandler() {
-      const status = {
-        passwordStrength: this.passwordStrength,
-        emailCorrected: this.emailCorrected,
-        passwordConfirmed: this.passwordConfirmed,
-      };
-      this.$emit("showThermsHandler", { step: 1, data: this.data, status });
+    goBack() {
+      this.$emit('go-back')
     },
   },
 };

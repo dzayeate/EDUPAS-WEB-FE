@@ -1,0 +1,67 @@
+/* ./src/assets/tailwind.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.multiselect-custom .multiselect__tags {
+    @apply relative w-full p-0 border rounded-lg  border-gray-300 focus:border-none focus:outline-none disabled:bg-black;
+}
+
+.multiselect-custom .multiselect__input {
+    @apply px-4 py-2 m-0 border focus:rounded-lg focus:ring-2 text-sm focus:ring-blue-500 focus:outline-none;
+}
+
+.multiselect-custom .multiselect__select {
+    @apply z-40 pr-1;
+}
+
+.multiselect--active .multiselect__select {
+    @apply absolute translate-x-full pr-3;
+}
+
+.multiselect-custom .multiselect__select:before {
+    @apply border-[6px]
+}
+
+
+.multiselect-custom .multiselect__placeholder {
+    @apply text-sm text-black px-4 pt-2 pb-0;
+}
+
+.multiselect--active:not(.multiselect--above) .multiselect__input,
+.multiselect--active:not(.multiselect--above) .multiselect__tags {
+    @apply rounded-lg !important;
+}
+
+.multiselect--above.multiselect--active .multiselect__input,
+.multiselect--above.multiselect--active .multiselect__tags {
+    @apply rounded-lg !important;
+}
+
+.multiselect-custom .multiselect__single {
+    @apply text-sm text-black px-4 pt-2 pb-0 border rounded-lg  border-[#C2C2C2];
+}
+
+.multiselect__content-wrapper {
+    @apply border border-blue-500 text-sm shadow-md rounded-lg mb-1 !important;
+}
+
+.multiselect__select,
+.multiselect__single,
+.multiselect__placeholder {
+    @apply text-sm;
+}
+
+.multiselect__option {
+    @apply px-4 py-2 min-h-0 !important
+}
+.multiselect__option--highlight {
+    @apply bg-colorPurple !important
+    /* width: 200px; */;
+}
+
+.custom-input {
+    @apply border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none
+}
