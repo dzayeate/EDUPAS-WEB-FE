@@ -88,30 +88,30 @@ const routes = [
     {
         path: '/dashboard',
         component: () => import('@/views/layout/LayoutDashboard.vue'),
-        // beforeEnter: async (to, from, next) => {
-        //     const userId = localStorage.getItem('userId');
+        beforeEnter: async (to, from, next) => {
+            const userId = localStorage.getItem('userId');
 
-        //     if (!userId) {
-        //         next('/login');
-        //     } else {
-        //         try {
-        //             await store.dispatch('user/getUserDetail', {
-        //                 search: userId,
-        //             });
+            if (!userId) {
+                next('/login');
+            } else {
+                try {
+                    await store.dispatch('user/getUserDetail', {
+                        search: userId,
+                    });
 
-        //             const roleName =
-        //                 store.getters['user/userDetail']?.role?.name;
+                    const roleName =
+                        store.getters['user/userDetail']?.role?.name;
 
-        //             if (roleName === 'Eo') {
-        //                 next();
-        //             } else {
-        //                 next('/'); // atau rute lain jika pengguna tidak memiliki akses
-        //             }
-        //         } catch (error) {
-        //             next('/'); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
-        //         }
-        //     }
-        // },
+                    if (roleName === 'Eo') {
+                        next();
+                    } else {
+                        next('/'); // atau rute lain jika pengguna tidak memiliki akses
+                    }
+                } catch (error) {
+                    next('/'); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
+                }
+            }
+        },
         children: [
             {
                 path: '/dashboard',
@@ -130,10 +130,7 @@ const routes = [
             {
                 path: '/dashboard/user',
                 name: 'User Dashboard',
-                component: () =>
-                    import(
-                        '@/views/pages/dashboard/UserView.vue'
-                    ),
+                component: () => import('@/views/pages/dashboard/UserView.vue'),
             },
         ],
     },
