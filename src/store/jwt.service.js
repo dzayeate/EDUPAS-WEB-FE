@@ -1,17 +1,17 @@
-const ID_TOKEN_KEY = "dX0IY675gh1eFGPWn62z";
+// const ID_TOKEN_KEY = "dX0IY675gh1eFGPWn62z";
 const USER_KEY = "hr6Ssk5YGKhYKltISaM7";
 import Cookies from "js-cookie";
 
 export const getToken = () => {
-  return window.localStorage.getItem(ID_TOKEN_KEY);
+  return Cookies.get("token");
 };
 
 export const saveToken = (token) => {
-  window.localStorage.setItem(ID_TOKEN_KEY, token);
+  Cookies.setItem("token", token);
 };
 
 export const destroyToken = () => {
-  window.localStorage.removeItem(ID_TOKEN_KEY);
+  Cookies.removeItem("token");
 };
 
 export const getUser = () => {

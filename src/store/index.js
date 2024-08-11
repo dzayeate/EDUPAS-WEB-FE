@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import contest from './contest.module';
 import user from './user.module';
 import auth from './auth.module';
+import region from './region.module';
 
 export default createStore({
     state() {
@@ -19,5 +20,6 @@ export default createStore({
         contest,
         user,
         auth,
+        region
     }
 });

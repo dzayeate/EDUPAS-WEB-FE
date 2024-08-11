@@ -15,6 +15,13 @@
   export default {
     components: {
     },
+    async created() {
+        const userId = localStorage.getItem("userId") || "";
+        if (userId) {
+            const params = { search: userId };
+            await this.$store.dispatch('user/getUserDetail', params);
+        }
+    },
   };
   </script>
   

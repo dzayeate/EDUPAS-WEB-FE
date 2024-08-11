@@ -49,6 +49,7 @@
               id="email"
               type="email"
               placeholder="Example@gmail.com"
+              autocomplete="email"
               class="block w-full p-2 text-sm text-black border border-[#C2C2C2] rounded-[6px] bg-[#F5F5FF] placeholder-[#757575] focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
               v-model="data.email"
             />
@@ -60,6 +61,7 @@
                 id="password"
                 :type="showPassword ? 'text' : 'password'"
                 placeholder="Enter your password"
+                autocomplete="new-password"
                 class="block w-full p-2 text-sm text-black border border-[#C2C2C2] rounded-[6px] bg-[#F5F5FF] placeholder-[#757575] focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
                 v-model="data.password"
               />
@@ -127,9 +129,10 @@
 
 <script>
 import Cookies from "js-cookie";
-import { POST_LOGIN } from "@/store/auth.module";
+// import { POST_LOGIN } from "@/store/auth.module";
 import Swal from "sweetalert2";
 import { useMeta } from "vue-meta";
+import { mapActions } from "vuex";
 
 export default {
   setup() {
@@ -146,20 +149,15 @@ export default {
     };
   },
   methods: {
+    ...mapActions('auth', ['postLogin']),
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
     async handleSubmit() {
       try {
         this.isLoading = true;
-        const response = await this.$store.dispatch(POST_LOGIN, this.data);
+        await this.$store.dispatch('auth/postLogin', this.data);
 
-        // Assume response contains the token
-        const token = response.data.token;
-
-        // Save token to cookie
-        Cookies.set("token", token, { expires: 7 }); // Token expires in 7 days
-        window.location.href = "/login";
       } catch (error) {
         // Handle error (e.g., display error message)
         Swal.fire({
