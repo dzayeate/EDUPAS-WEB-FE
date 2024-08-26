@@ -176,24 +176,34 @@
                     </li>
                     <li class="mr-4">
                         <a
-                            v-if="['/competition'].includes($route.path)"                            
-                            :class="`${
+                            v-if="['/competition'].includes($route.path)"
+                            :class="[
+                                'cursor-pointer',
+                                'font-medium',
                                 isCompetitionSectionInView
-                                    ? 'font-medium text-customBlue'
-                                    : 'font-normal text-colorText'
-                            } cursor-pointer font-medium transition-colors duration-300 hover:opacity-[0.8]`"
+                                    ? 'text-customBlue'
+                                    : 'text-colorText',
+                                'transition-colors',
+                                'duration-300',
+                                'hover:opacity-[0.8]',
+                            ]"
                             >Competition</a
                         >
                         <a
-                            v-else                            
+                            v-else
                             @click="
                                 navigateAndScrollTo('HomeView', 'competition')
                             "
-                            :class="`${
+                            :class="[
+                                'cursor-pointer',
+                                'font-medium',
                                 isCompetitionSectionInView
-                                    ? 'font-medium text-customBlue'
-                                    : 'font-normal text-colorText'
-                            } cursor-pointer font-medium transition-colors duration-300 hover:opacity-[0.8]`"
+                                    ? 'text-customBlue'
+                                    : 'text-colorText',
+                                'transition-colors',
+                                'duration-300',
+                                'hover:opacity-[0.8]',
+                            ]"
                             >Competition</a
                         >
                     </li>
@@ -235,7 +245,8 @@
                             href="/"
                             @click="navigateAndScrollTo('HomeView', 'contact')"
                             :class="`${
-                                isContactSectionInView
+                                isContactSectionInView &&
+                                !$route.path == 'competition?type=list'
                                     ? 'font-medium text-customBlue'
                                     : 'font-normal text-colorText'
                             } cursor-pointer text-[#413e66] font-medium hover:opacity-[0.8]`"
@@ -244,7 +255,10 @@
                     </li>
                 </ul>
             </div>
-            <div v-if="!userDetail" class="ml-auto hidden md:flex gap-4 text-sm">
+            <div
+                v-if="!userDetail"
+                class="ml-auto hidden md:flex gap-4 text-sm"
+            >
                 <a href="/login">
                     <span class="font-normal text-colorText hover:opacity-[0.8]"
                         >Login</span
@@ -327,7 +341,6 @@
 <script>
 import { nextTick } from 'vue';
 import { mapState } from 'vuex';
-import Cookies from 'js-cookie';
 import { all } from 'axios';
 
 export default {
@@ -346,7 +359,7 @@ export default {
     },
     async mounted() {
         await nextTick(); // Ensure DOM elements are rendered
-        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.handleScroll, { passive: true });
 
         const options = {
             rootMargin: '-50px 0px -50px 0px',
@@ -385,7 +398,8 @@ export default {
             return (
                 roleName === 'Umum' ||
                 roleName === 'Siswa' ||
-                roleName === 'Mahasiswa'
+                roleName === 'Mahasiswa' ||
+                roleName === 'Juri'
             );
         },
     },
@@ -443,7 +457,7 @@ export default {
             await this.$router.push({ name: routeName });
             this.$nextTick(() => {
                 this.navigateTo(tab);
-                window.addEventListener('scroll', this.handleScroll);
+                window.addEventListener('scroll', this.handleScroll, { passive: true });
 
                 const options = {
                     rootMargin: '-50px 0px -50px 0px',
@@ -470,17 +484,13 @@ export default {
             this.isMenuOpen = !this.isMenuOpen;
         },
         showDropdown() {
-            if (this.isDropdownOpen == false) {                
-                this.isDropdownOpen = true;
-            } else {
-                this.isDropdownOpen = false;
-            }
+            this.isDropdownOpen = !this.isDropdownOpen;
         },
-        logoutHandler() {
-            Cookies.remove('token');
+        async logoutHandler() {
+            await localStorage.removeItem('token');
             localStorage.clear();
             window.location.href = '/';
-        },
+        }
     },
 };
 </script>

@@ -55,11 +55,13 @@ module.exports = {
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
                 openSans: ['Lexend', 'sans-serif'],
+                poppins: ['Poppins', 'sans-serif']
             },
             boxShadow: {
-                'form': '1px 2px 2px 0px rgba(0, 0, 0, 0.12)',
-                'card': '0px 4px 10px 0px #00000026'
-            }            
+                form: '1px 2px 2px 0px rgba(0, 0, 0, 0.12)',
+                card: '0px 4px 10px 0px #00000026',
+                chart: '0px 4px 10px 0px rgba(0, 0, 0, 0.15);',
+            },
         },
     },
 };

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas ref="canvas"></canvas>
+        <canvas ref="canvas" class="flex flex-row max-w-full"></canvas>
     </div>
 </template>
 
@@ -23,7 +23,7 @@ export default defineComponent({
                 type: 'doughnut', // Tentukan jenis chart di sini
                 data: props.data,
                 options: {
-                    cutout: '80%', // Mengontrol ukuran lubang di tengah (bisa juga angka seperti 70)                    
+                    cutout: '70%', // Mengontrol ukuran lubang di tengah (bisa juga angka seperti 70)                    
                 },
             });
         });

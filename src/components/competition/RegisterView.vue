@@ -1,6 +1,6 @@
 <template>
     <!-- <Loading :active="isLoading" /> -->
-    <div>
+    <div v-if="isRegister">
         <div class="flex flex-col py-[12px]">
             <h2 class="font-medium text-[28px] leanding-[36px]">
                 {{ contestDetail?.name }}
@@ -37,35 +37,40 @@
                                             id="teamLeader"
                                             type="text"
                                             placeholder="Nama Ketua Tim"
-                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
-                                            v-model="data.teamLeader"
+                                            disabled
+                                            :class="`border-[#C2C2C2] disabled:cursor-not-allowed disabled:text-gray-500 focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
+                                            v-model="name"
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2 mb-[8px]">
-                                        <label for="domisili">Domisili</label>
+                                        <label for="domisili">Institusi</label>
                                         <input
                                             id="domisili"
                                             type="text"
-                                            placeholder="Masukan Domisili"
-                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
-                                            v-model="data.teamLeader"
+                                            placeholder="Masukan Institusi"
+                                            disabled
+                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none disabled:cursor-not-allowed disabled:text-gray-500`"
+                                            v-model="institusi"
                                         />
                                     </div>
                                     <div class="flex flex-col gap-2 mb-[8px]">
-                                        <label for="phone">No. Telp</label>
+                                        <label for="phoneNumber"
+                                            >No. Telp</label
+                                        >
                                         <input
-                                            id="phone"
+                                            id="phoneNumber"
                                             type="text"
-                                            placeholder="Nama Ketua Tim"
-                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
-                                            v-model="data.teamLeader"
+                                            placeholder="Nomer telephone"
+                                            disabled
+                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none disabled:cursor-not-allowed disabled:text-gray-500`"
+                                            v-model="data.phoneNumber"
                                         />
                                     </div>
                                     <div class="flex mb-[8px]">
                                         <input
                                             id="link-checkbox"
                                             type="checkbox"
-                                            v-model="data.isAgree"
+                                            v-model="isAgree1"
                                             class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded-[6px] focus:ring-blue-500 focus:ring-2 cursor-pointer"
                                         />
                                         <label
@@ -80,7 +85,7 @@
                                         <input
                                             id="link-checkbox"
                                             type="checkbox"
-                                            v-model="data.isAgree"
+                                            v-model="isAgree2"
                                             class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded-[6px] focus:ring-blue-500 focus:ring-2 cursor-pointer"
                                         />
                                         <label
@@ -95,78 +100,98 @@
                                 <div
                                     class="w-1/2 flex flex-col gap-2 py-[12px]"
                                 >
-                                    <div class="flex flex-col gap-2 mb-[8px]">
-                                        <label for="teamLeader">Nama Tim</label>
-                                        <input
-                                            id="teamLeader"
-                                            type="text"
-                                            placeholder="Nama Ketua Tim"
-                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
-                                            v-model="data.teamLeader"
-                                        />
-                                    </div>
-                                    <div class="flex flex-col gap-2 mb-[8px]">
-                                        <label for="teamLeader"
-                                            >Jumlah Anggota</label
-                                        >
-                                        <input
-                                            id="teamLeader"
-                                            type="text"
-                                            placeholder="Nama Ketua Tim"
-                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
-                                            v-model="data.teamLeader"
-                                        />
-                                    </div>
                                     <div
-                                        v-for="(member, index) in data.members"
-                                        :key="index"
-                                        :class="`${
-                                            index !== 4 ?? 'mb-[8px]'
-                                        } flex flex-col gap-2`"
+                                        class="flex flex-col gap-2"
+                                        v-if="contestDetail?.isTeam == 1"
                                     >
-                                        <div class="flex items-center gap-4">
-                                            <label :for="'member' + index"
-                                                >Nama Anggota Tim -
-                                                {{ index + 1 }}</label
-                                            >
-                                            <button
-                                                v-if="data.members.length > 1"
-                                                type="button"
-                                                @click="
-                                                    removeMemberHandler(index)
-                                                "
-                                                class="text-red-600 hover:opacity-[0.8] text-[12px]"
-                                            >
-                                                Hapus
-                                            </button>
-                                        </div>
-                                        <input
-                                            :id="'member' + index"
-                                            type="text"
-                                            placeholder="Nama Anggota Tim"
-                                            :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
-                                            v-model="member.name"
-                                        />
-                                    </div>
-                                    <div class="mb-[8px]">
-                                        <button
-                                            v-if="data.members.length < 4"
-                                            type="button"
-                                            @click="addMemberHandler"
-                                            class="w-fit flex gap-2 text-[14px] items-center border border-1 rounded-[6px] py-[6px] px-[12px] hover:opacity-[0.8]"
+                                        <div
+                                            class="flex flex-col gap-2 mb-[8px]"
                                         >
-                                            Tambah Anggota
-                                            <img
-                                                class="w-[20px] h-[20px]"
-                                                :src="
-                                                    require('@/assets/icons/icon-plus-circle.svg')
-                                                "
+                                            <label for="teamLeader"
+                                                >Nama Tim</label
+                                            >
+                                            <input
+                                                id="teamLeader"
+                                                type="text"
+                                                placeholder="Nama Tim"
+                                                :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
+                                                v-model="data.nameTeam"
                                             />
-                                        </button>
-                                        <span
-                                            class="font-normal text-[12px] text-[#616161]"
-                                            >Max 4 anggota*</span
+                                        </div>
+                                        <div
+                                            class="flex flex-col gap-2 mb-[8px]"
                                         >
+                                            <label for="teamLeader"
+                                                >Jumlah Anggota</label
+                                            >
+                                            <input
+                                                id="teamLeader"
+                                                type="text"
+                                                placeholder="Jumlah Anggota"
+                                                :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
+                                                v-model="data.teamSize"
+                                            />
+                                        </div>
+                                        <div
+                                            v-for="(
+                                                member, index
+                                            ) in data.teamMembers"
+                                            :key="index"
+                                            :class="`${
+                                                index !== 4 ?? 'mb-2'
+                                            } flex flex-col gap-2`"
+                                        >
+                                            <div
+                                                class="flex items-center gap-4"
+                                            >
+                                                <label :for="'member' + index"
+                                                    >Nama Anggota Tim -
+                                                    {{ index + 1 }}</label
+                                                >
+                                                <button
+                                                    v-if="
+                                                        data.teamMembers
+                                                            .length > 1
+                                                    "
+                                                    type="button"
+                                                    @click="
+                                                        removeMemberHandler(
+                                                            index,
+                                                        )
+                                                    "
+                                                    class="text-red-600 hover:opacity-[0.8] text-[12px]"
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                            <input
+                                                :id="'member' + index"
+                                                type="text"
+                                                placeholder="Nama Anggota Tim"
+                                                :class="`border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full p-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none`"
+                                                v-model="data.teamMembers[index]"
+                                            />
+                                        </div>
+                                        <div class="mb-2">
+                                            <button
+                                                v-if="data.teamMembers.length < Math.min(data.teamSize, 4)"
+                                                type="button"
+                                                @click="addMemberHandler"
+                                                class="w-fit flex gap-2 text-[14px] items-center border border-1 rounded-[6px] py-[6px] px-[12px] hover:opacity-[0.8]"
+                                            >
+                                                Tambah Anggota
+                                                <img
+                                                    class="w-[20px] h-[20px]"
+                                                    :src="
+                                                        require('@/assets/icons/icon-plus-circle.svg')
+                                                    "
+                                                />
+                                            </button>
+                                            <span
+                                                class="font-normal text-[12px] text-[#616161]"
+                                                >Max 4 anggota*
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="flex flex-col gap-2">
                                         <label for="firstName"
@@ -197,7 +222,7 @@
                                                             class="hidden"
                                                             @change="onChange"
                                                             ref="file"
-                                                            accept=".pdf,.jpg,.jpeg,.png"
+                                                            accept=".pdf"
                                                         />
                                                         <div
                                                             :class="`${
@@ -225,8 +250,7 @@
                                                         class="text-xs text-gray-400 mt-1"
                                                     >
                                                         Maximum file size: 5Mb
-                                                        and Format file .pdf,
-                                                        .jpg, jpeg, and .png
+                                                        and Format file .pdf
                                                     </p>
                                                 </div>
                                             </div>
@@ -285,6 +309,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="flex justify-end">
+                                <button
+                                    :class="`${
+                                        !isFormValid
+                                            ? 'opacity-50 cursor-not-allowed'
+                                            : 'hover:opacity-[0.8]'
+                                    } bg-blue-600 text-white px-4 py-2 rounded-md w-fit`"
+                                    @click="handleSubmit"
+                                    :disabled="!isFormValid"
+                                >
+                                    Submit
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -306,81 +343,134 @@ export default {
     data() {
         return {
             isLoading: true,
-            filter: [
-                'Title Content',
-                'Title Content',
-                'Title Content',
-                'Title Content',
-                'Title Content',
-                'Title Content',
-            ],
+            isDragging: false,
             files: [],
+            file: '',
+            name: '',
+            institusi: '',
+            isAgree1: false,
+            isAgree2: false,
+            userId: '',
             data: {
-                teamLeader: '',
-                file: [],
-                members: [{ name: '' }],
+                competitionId: '',
+                domicile: '',
+                phoneNumber: '',
+                nameTeam: '',
+                isTeam: false,
+                teamSize: '',
+                teamMembers: [],
             },
         };
-    },   
+    },
+    created() {
+        // Inisialisasi data jika userDetail sudah ada saat created
+        this.initializeUserData();
+
+        // Periksa juga contestDetail untuk set isTeam
+        if (this.contestDetail?.isTeam == 1) {
+            this.data.isTeam = true;
+        }        
+    },
+    watch: {
+        userDetail: {
+            handler: 'initializeUserData',
+            immediate: true,
+        },
+        'data.teamSize'(newSize) {
+            this.adjustTeamMembers(newSize);
+        },
+    },
     computed: {
         contestDetail() {
             return this.$store.getters['contest/contestDetail'];
         },
-    },
+        userDetail() {
+            return this.$store.getters['user/userDetail'];
+        },
+        isFormValid() {
+            const activities = this.userDetail?.activities?.map(
+                (activity) => activity.competitionId,
+            );
+            const competitionId = this.$route.params.slug;
+
+            if (!this.contestDetail?.isTeam == 1) {
+                return (
+                    this.name &&
+                    this.institusi &&
+                    this.data.phoneNumber &&
+                    this.files.length &&
+                    this.isAgree1 == true &&
+                    this.isAgree2 == true &&
+                    !activities?.includes(competitionId)
+                );
+            } else {
+                return (
+                    this.name &&
+                    this.institusi &&
+                    this.data.phoneNumber &&
+                    this.files.length &&                    
+                    this.data.teamMembers &&
+                    this.isAgree1 == true &&
+                    this.isAgree2 == true &&
+                    !activities?.includes(competitionId)
+                );
+            }
+        },
+        isRegister() {
+            const activities = this.userDetail?.activities?.map(activity => activity.competitionId);
+            const competitionId = this.$route.params.slug;
+            
+            return !activities?.includes(competitionId)
+        }
+    },    
     methods: {        
-        splitString(v) {
-            // Mengganti karakter pemisah khusus (\m) dengan newline (\n)
-            const normalizedString = v.replace(/\\m/g, '\n');
-
-            // Memisahkan string berdasarkan newline (\n)
-            const resultArray = normalizedString.split('\n');
-
-            // Mengembalikan array yang dihasilkan
-            return resultArray;
+        initializeUserData() {
+            if (this.userDetail) {
+                this.name =
+                    this.userDetail?.biodate.firstName +
+                        ' ' +
+                        this.userDetail?.biodate.lastName || '';
+                this.nameTeam =
+                    this.userDetail?.biodate.firstName +
+                        ' ' +
+                        this.userDetail?.biodate.lastName || '';
+                this.data.phoneNumber = this.userDetail?.biodate.phone || '';
+                this.institusi = this.userDetail?.biodate.institutionName || '';
+                this.data.domicile =
+                    this.userDetail?.biodate.institutionName || '';
+                this.imagePreview =
+                    this.userDetail?.biodate.image?.previewUrl || '';
+            }
         },
-        formatDate(v) {
-            // Membuat objek Date dari string input
-            const date = new Date(v);
+        async handleSubmit() {
+            this.userId = localStorage.getItem('userId');
+            this.data.competitionId = this.contestDetail.id;
 
-            // Mendefinisikan nama bulan dalam bahasa Indonesia
-            const months = [
-                'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember',
-            ];
+            try {
+                if (this.isFormValid) {
+                    const formData = new FormData();
 
-            // Mengambil tanggal dan nama bulan
-            const day = date.getDate();
-            const month = months[date.getMonth()];
+                    this.files.forEach((file) => {
+                        formData.append('supportingDocuments', file);
+                    });
 
-            // Mengembalikan string dalam format "10 Juni"
-            return `${day} ${month}`;
-        },
-        extractTime(v) {
-            // Membuat objek Date dari string input
-            const date = new Date(v);
+                    for (const key in this.data) {
+                        formData.append(key, this.data[key]);
+                    }
 
-            // Mengambil jam dan menit
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-
-            // Mengembalikan waktu dalam format "HH:MM"
-            return `${hours}:${minutes}`;
-        },
-        navigateToCompetition(value) {
-            this.$router.push({
-                name: 'Competition Detail',
-                query: { type: value },
-            });
+                    await this.$store.dispatch(
+                        'user/registerCompetition',
+                        formData,
+                    );
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text:
+                        err?.response?.data?.message || 'Something went wrong.',
+                    icon: 'error',
+                });
+            }
         },
         handleUploaded(data) {
             const base64str = data.url.substring(data.url.indexOf(',') + 1);
@@ -492,17 +582,36 @@ export default {
             )}${extension}`;
             return truncated;
         },
+        adjustTeamMembers(newSize) {
+            const maxSize = 4;
+            const size = Math.min(Number(newSize), maxSize);
+
+            if (size > this.data.teamMembers.length) {
+                // Menambahkan anggota hingga sesuai dengan teamSize
+                while (this.data.teamMembers.length < size) {
+                    this.data.teamMembers.push('');
+                }
+            } else if (size < this.data.teamMembers.length) {
+                // Mengurangi anggota hingga sesuai dengan teamSize
+                this.data.teamMembers.splice(size);
+            }
+        },
         addMemberHandler() {
-            if (this.data.members.length < 4) {
-                this.data.members.push({
-                    name: '',
-                });
+            const maxSize = 4;
+            if (this.data.teamMembers.length < maxSize) {
+                this.data.teamMembers.push('');
+                this.data.teamSize = this.data.teamMembers.length; // Update teamSize untuk mencerminkan perubahan
             } else {
                 alert('You can only add up to 4 members.');
             }
         },
         removeMemberHandler(index) {
-            this.data.members.splice(index, 1);
+            if (this.data.teamMembers.length > 1) {
+                this.data.teamMembers.splice(index, 1);
+                this.data.teamSize = this.data.teamMembers.length; // Update teamSize untuk mencerminkan perubahan
+            } else {
+                alert('You must have at least one member.');
+            }
         },
     },
 };

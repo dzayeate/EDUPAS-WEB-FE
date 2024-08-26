@@ -1,6 +1,6 @@
 <template>
     <div
-        class="sm:w-6/12 md:w-3/12 bg-white border border-gray-200 rounded-lg shadow"
+        class="h-fit bg-white border border-gray-200 rounded-lg shadow"
     >
         <a :href="`/competition/${slug}`">
             <img v-if="image" class="rounded-t-lg" :src="image" alt="" />
@@ -28,6 +28,7 @@
                 </span>
             </p>
             <button
+                v-if="description.length > 100"
                 class="text-blue-500 text-sm hover:underline focus:outline-none"
                 @click="toggleDescription"
             >
@@ -45,10 +46,7 @@
 export default {
     props: {
         slug: String,
-        image: {
-            type: String,
-            default: 'https://via.placeholder.com/150',
-        },
+        image: String,
         title: String,
         description: String,
         discount: String,

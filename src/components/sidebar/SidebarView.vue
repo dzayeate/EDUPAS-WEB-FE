@@ -49,7 +49,7 @@
             <nav class="mt-2 text-sm font-openSans">
                 <ul>
                     <li
-                        v-for="(menuItem, index) in menuItems"
+                        v-for="(menuItem, index) in filteredMenuItems"
                         :key="index"
                         class="mx-4 px-[0.7rem] py-2 my-1 rounded-md hover:bg-colorPurple hover:text-white cursor-pointer"
                         :class="[
@@ -107,6 +107,7 @@ export default {
                     label: 'User',
                     icon: 'pr-user',
                     link: '/dashboard/user',
+                    requiredRole: 'Admin'
                 },
             ],
             photoUrl: ''
@@ -115,7 +116,15 @@ export default {
     computed: {
         userDetail() {
             return this.$store.getters['user/userDetail']
-        },        
+        },
+        filteredMenuItems() {
+            return this.menuItems.filter(menuItem => {
+                if (menuItem.requiredRole) {
+                    return this.userDetail?.role?.name === menuItem.requiredRole;
+                }
+                return true;
+            });
+        }        
     },
     watch: {
         userDetail: {

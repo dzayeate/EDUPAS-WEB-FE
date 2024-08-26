@@ -1,33 +1,36 @@
 <template>
     <div class="flex items-center gap-4 mt-10 pb-7">
-        <div class="relative w-1/4">
-            <div
-                class="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none"
-            >
-                <svg
-                    class="w-4 h-4 text-[#616161]"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
+        <form class="relative w-1/4" action="" @submit.prevent="performSearch">
+            <div>
+                <div
+                    class="absolute inset-y-0 end-0 flex items-center pe-3 cursor-pointer"
+                    @click="performSearch"
                 >
-                    <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                </svg>
+                    <svg
+                        class="w-4 h-4 text-[#616161]"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                        />
+                    </svg>
+                </div>
+                <input
+                    type="search"
+                    id="default-search"
+                    class="block w-full p-2 pe-10 text-sm text-black border border-[#C2C2C2] rounded-lg bg-[#FFFF] placeholder-[#757575] focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                    placeholder="Search"
+                    v-model="search.keyword"                                    
+                />
             </div>
-            <input
-                type="search"
-                id="default-search"
-                class="block w-full p-2 pe-10 text-sm text-black border border-[#C2C2C2] rounded-lg bg-[#FFFF] placeholder-[#757575] focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
-                placeholder="Search"
-                required
-            />
-        </div>
+        </form>
 
         <select
             id="competition-type"
@@ -60,19 +63,33 @@
             <option value="DE">Germany</option>
         </select>
     </div>
-    <div class="mb-12">
-        <div class="flex gap-6 justify-start">
+    <div class="container mx-auto mb-12">
+        <v-icon
+            name="ri-refresh-line"
+            class="text-gray-400 my-10 w-full"
+            speed="slow"
+            scale="4"
+            animation="spin"
+            v-if="isLoading"
+        />
+        <div v-else-if="contests.length === 0" class="text-center">
+            <h2
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-semibold italic text-lg mx-auto my-16"
+            >
+                Data Tidak Ditemukan
+            </h2>
+        </div>
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <EventCard
                 v-for="(v, i) in contests"
                 :key="i"
                 :slug="v.id"
-                :image="v.banner"
+                :image="v.thumbnail?.previewUrl"
                 :title="v.name"
                 :description="v.description"
                 :discount="v.discount"
             />
-        </div>
-        <v-icon name="ri-refresh-line" class="text-gray-400 my-10 w-full" speed="slow" scale="4" animation="spin" v-if="isLoading"/>
+        </div>        
     </div>
 </template>
 
@@ -89,6 +106,15 @@ export default {
         EventCard,
         VIcon: OhVueIcon
     },
+    data() {
+        return {
+            search: {
+                page: '',
+                length: 4,
+                keyword: '',
+            },
+        }
+    },
     computed: {
         contests() {
             return this.$store.getters['contest/contests'];
@@ -97,5 +123,16 @@ export default {
             return this.$store.getters['contest/isLoading'];
         }
     },
+    methods: {
+        async performSearch() {
+            try {
+                await this.$store.dispatch('contest/getContest', this.search);
+                // this.isLoading = false;
+            } catch (err) {
+                console.log(err);
+            }
+        },
+    }
+    
 };
 </script>

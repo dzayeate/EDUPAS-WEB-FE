@@ -87,7 +87,17 @@
                         @update-items="updateJudges"
                     />
                 </div>
-                <div class="flex flex-row justify-around">
+                <div class="flex flex-col gap-1 mb-3 w-8/12">
+                    <p class="font-medium mb-2">SPONSOR</p>
+                    <InputItem
+                        iconName="fa-user"
+                        itemType="Sponsor"
+                        placeholderText="Masukan Nama Sponsor"
+                        :initialItems="sponsors"
+                        @update-items="updateSponsors"
+                    />
+                </div>
+                <!-- <div class="flex flex-row justify-around">
                     <div class="flex flex-col gap-1 mb-[8px] w-8/12">
                         <p class="font-medium mb-2">SPONSOR</p>
                         <InputItem
@@ -108,7 +118,7 @@
                             @update-items="updateOrganizers"
                         />
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div
@@ -116,7 +126,14 @@
         >
             <div class="w-full flex flex-col gap-1 py-[12px]">
                 <p class="font-medium mb-1">DESKRIPSI KOMPETISI</p>
-                <textarea name="descripstion" id="description" cols="30" rows="10" class="custom-input mb-2" placeholder="Deskripsi"/>
+                <textarea
+                    name="descripstion"
+                    id="description"
+                    cols="30"
+                    rows="10"
+                    class="custom-input mb-2"
+                    placeholder="Deskripsi"
+                />
             </div>
         </div>
         <div
@@ -124,11 +141,22 @@
         >
             <div class="w-full flex flex-col gap-1 py-[12px]">
                 <p class="font-medium mb-1">Syarat dan Ketentuan</p>
-                <textarea name="descripstion" id="description" cols="30" rows="10" class="custom-input mb-2" placeholder="Deskripsi"/>
+                <textarea
+                    name="descripstion"
+                    id="description"
+                    cols="30"
+                    rows="10"
+                    class="custom-input mb-2"
+                    placeholder="Deskripsi"
+                />
             </div>
         </div>
         <div class="flex justify-end">
-            <button class=" text-sm bg-colorPurple text-white rounded-md px-4 font-medium py-2">Kirim</button>
+            <button
+                class="text-sm bg-colorPurple text-white rounded-md px-4 font-medium py-2"
+            >
+                Kirim
+            </button>
         </div>
     </div>
 </template>
@@ -149,7 +177,7 @@ export default {
             fileName: '', // Data untuk menyimpan nama file
             judges: [''],
             sponsors: [''],
-            organizers: ['']
+            // organizers: ['']
         };
     },
     methods: {
@@ -174,7 +202,7 @@ export default {
         updateOrganizers(organizers) {
             this.organizers = organizers;
             console.log('Updated Organizers:', organizers);
-        }
+        },
     },
 };
 </script>

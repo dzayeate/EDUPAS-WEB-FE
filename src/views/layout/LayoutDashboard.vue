@@ -8,8 +8,12 @@
 
 <script>
 import SidebarView from '@/components/sidebar/SidebarView.vue';
+import { useMeta } from 'vue-meta';
 
 export default {
+    setup() {
+        useMeta({ title: 'Dashboard', titleTemplate: 'EduPass | %s' });
+    },
     components: {        
         SidebarView,        
     },

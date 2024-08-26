@@ -41,7 +41,7 @@ export default {
             //     emailCorrected: "",
             //     passwordConfirmed: "",
             //   },
-            step: 1,
+            // step: 1,
         };
     },
     methods: {
