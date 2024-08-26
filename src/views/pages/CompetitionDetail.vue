@@ -13,6 +13,7 @@
                     About Competition
                 </a>
                 <a
+                    v-if="!isValid && userDetail"
                     @click.prevent="navigateToCompetition('registration')"
                     :class="`${
                         $route.query.type === 'registration'
@@ -54,14 +55,16 @@
                 </a>
             </div>
         </div>
-        <div class="py-6">            
+        <div class="py-6">
             <AboutView
                 v-if="!$route.query.type || $route.query.type === 'about'"
             />
-            <RegisterView v-if="$route.query.type === 'registration'" />
+            <RegisterView
+                v-if="$route.query.type === 'registration' && !isValid"
+            />
             <ScheduleView v-if="$route.query.type === 'schedule'" />
             <OrganizerView v-if="$route.query.type === 'organizers'" />
-            <ContributorView v-if="$route.query.type === 'contributors'" />            
+            <ContributorView v-if="$route.query.type === 'contributors'" />
         </div>
     </div>
 </template>
@@ -92,8 +95,27 @@ export default {
     },
     async mounted() {
         await this.getData();
+        this.redirectIfInvalid();
+    },    
+    computed: {
+        contestDetail() {
+            return this.$store.getters['contest/contestDetail'];
+        },
+        userDetail() {
+            return this.$store.getters['user/userDetail'];
+        },
+        isValid() {
+            const activities = this.userDetail?.activities?.map(
+                (activity) => activity.competitionId,
+            );
+            const competitionId = this.$route.params.slug;
+            const date = new Date();
+            const lombaDate = new Date(this.contestDetail?.endDate);
+            const allowedRoles = ['Siswa', 'Mahasiswa'];
+
+            return activities?.includes(competitionId) || date > lombaDate || !allowedRoles.includes(this.userDetail?.role?.name) || allowedRoles.includes(this.userDetail?.role?.name) && !this.userDetail?.isVerified;
+        },
     },
-    computed: {},
     methods: {
         async getData() {
             try {
@@ -110,6 +132,26 @@ export default {
                 name: 'Competition Detail',
                 query: { type: value },
             });
+        },
+        redirectIfInvalid() {
+            const activities = this.userDetail?.activities?.map(
+                (activity) => activity.competitionId,
+            );
+            const competitionId = this.$route.params.slug;
+            const date = new Date();
+            const lombaDate = new Date(this.contestDetail?.endDate);
+            const allowedRoles = ['Siswa', 'Mahasiswa'];            
+            
+            if (
+                (this.$route.query.type === 'registration' &&
+                    (!this.userDetail || activities?.includes(competitionId) ||
+                        date > lombaDate || !allowedRoles.includes(this.userDetail?.role?.name) || allowedRoles.includes(this.userDetail?.role?.name) && !this.userDetail?.isVerified))
+            ) {
+                this.$router.replace({
+                    name: 'Competition Detail',
+                    query: { type: 'about' },
+                });                
+            }
         },
     },
 };

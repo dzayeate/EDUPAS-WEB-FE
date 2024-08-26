@@ -1,5 +1,5 @@
 <template>
-    <div class="px-[16px] md:px-[42px] py-[24px]">
+    <div class="container px-24 py-12">
         <div class="flex justify-between items-center">
             <div class="flex gap-6">
                 <a
@@ -200,10 +200,15 @@ export default {
         },
         roleMessage() {
             const roleName = this.userDetail?.role?.name;
+            const activities = this.userDetail?.registeredCompetitions > 0;
             if (roleName === 'Umum') {
                 return 'Anda belum Terverifikasi, Lengkapi Biodata Anda Sekarang';
             } else if (roleName === 'Siswa' || roleName === 'Mahasiswa') {
-                return 'Anda belum mendaftar untuk sebuah lomba! Bergabunglah dengan salah satunya';
+                if (activities) {
+                    return ''
+                } else {
+                    return 'Anda belum mendaftar untuk sebuah lomba! Bergabunglah dengan salah satunya';
+                }
             } else {
                 return '';
             }

@@ -768,6 +768,7 @@ export default {
                     this.data.institutionName &&
                     this.data.pupils &&
                     this.data.field &&
+                    this.files.length &&
                     this.dateIsValid == true &&
                     this.phoneIsValid == true
                 );

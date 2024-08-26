@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import ApiService from './api.service';
 import Swal from 'sweetalert2';
 import router from '@/router';
@@ -6,12 +5,16 @@ import router from '@/router';
 // export const POST_REGISTER = "postRegister";
 // export const POST_LOGIN = "postLogin";
 
-const state = {};
+const state = {
+    isLoading: false
+};
 
-const getters = {};
+const getters = {
+    isLoading: (state) => state.isLoading,
+};
 
 const actions = {
-    async postRegister({dispatch}, data) {
+    async postRegister({ dispatch }, data) {
         try {
             await ApiService.post('/auth/register', data, {
                 headers: {
@@ -26,35 +29,40 @@ const actions = {
                 router.push('/login');
             });
         } catch (error) {
-            console.error('Error:', error);
             Swal.fire({
                 title: 'Error',
                 text: 'Maaf, Registrasi Gagal',
                 icon: 'error',
             });
         }
-    },
-    postLogin({ dispatch }, params) {
-        return new Promise((resolve, reject) => {
-            ApiService.post('/auth/login', params)
-                .then(async ({ data }) => {
-                    const userDetails = data.data;
-                    const token = userDetails.token;
+    },    
+    async postLogin({ dispatch, commit }, params) {
+        try {
+            commit('SET_LOADING', true);
+            
+            const { data } = await ApiService.post('/auth/login', params);
+            const userDetails = data.data;
+            const token = userDetails.token;
 
-                    Cookies.set('token', token, { expires: 7 }); // Token expires in 7 days
-
-                    window.location.href = '/';
-
-                    resolve(data);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
+            localStorage.setItem('token', token);
+            // Cookies.set('token', token, { expires: 7 }); // Token expires in 7 days            
+            
+            await router.push('/')
+            
+            return data;
+        } catch (err) {
+            throw err;
+        } finally {
+            commit('SET_LOADING', false);                        
+        }
     },
 };
 
-const mutations = {};
+const mutations = {
+    SET_LOADING(state, status) {
+        state.isLoading = status;
+    },
+};
 
 export default {
     namespaced: true,

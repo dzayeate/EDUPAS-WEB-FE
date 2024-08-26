@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '@/store'; // Import your Vuex store instance
-import Cookies from 'js-cookie';
 import VueJwtDecode from 'vue-jwt-decode';
 
 const routes = [
@@ -61,7 +60,8 @@ const routes = [
 
                             if (roleName === 'Umum') {
                                 next((vm) => {
-                                    vm.currentStep = 2;
+                                    vm.currentStep = 2;                                    
+                                    
                                 });
                             } else if (
                                 roleName === 'Siswa' ||
@@ -102,13 +102,18 @@ const routes = [
                     const roleName =
                         store.getters['user/userDetail']?.role?.name;
 
-                    if (roleName === 'Eo') {
+                    if (
+                        roleName === 'Eo' ||
+                        roleName === 'Admin' ||
+                        roleName === 'Perusahaan' ||
+                        roleName === 'Sponsor'
+                    ) {
                         next();
                     } else {
-                        next('/'); // atau rute lain jika pengguna tidak memiliki akses
+                        next(from.fullPath); // atau rute lain jika pengguna tidak memiliki akses
                     }
                 } catch (error) {
-                    next('/'); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
+                    next(from.fullPath); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
                 }
             }
         },
@@ -131,6 +136,30 @@ const routes = [
                 path: '/dashboard/user',
                 name: 'User Dashboard',
                 component: () => import('@/views/pages/dashboard/UserView.vue'),
+                beforeEnter: async (to, from, next) => {
+                    const userId = localStorage.getItem('userId');
+
+                    if (!userId) {
+                        next('/login');
+                    } else {
+                        try {
+                            await store.dispatch('user/getUserDetail', {
+                                search: userId,
+                            });
+
+                            const roleName =
+                                store.getters['user/userDetail']?.role?.name;
+
+                            if (roleName === 'Admin') {
+                                next();
+                            } else {
+                                next(from.fullPath); // atau rute lain jika pengguna tidak memiliki akses
+                            }
+                        } catch (error) {
+                            next(from.fullPath); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
+                        }
+                    }
+                },
             },
         ],
     },
@@ -204,7 +233,7 @@ const isTokenValid = async (token) => {
 //   }
 // });
 router.beforeEach(async (to, from, next) => {
-    const token = Cookies.get('token');
+    const token = localStorage.getItem('token');
 
     if (token) {
         try {
@@ -219,7 +248,7 @@ router.beforeEach(async (to, from, next) => {
                     next(); // Allow navigation to other routes
                 }
             } else {
-                Cookies.remove('token'); // Remove expired token
+                localStorage.removeItem('token'); // Remove expired token
                 localStorage.removeItem('userId');
                 if (to.matched.some((record) => record.meta.requiresAuth)) {
                     next({ path: '/login' }); // Redirect to login if token is expired and accessing protected routes
@@ -229,7 +258,7 @@ router.beforeEach(async (to, from, next) => {
             }
         } catch (err) {
             console.error('Invalid token:', err.message);
-            Cookies.remove('token'); // Remove invalid token
+            localStorage.removeItem('token'); // Remove invalid token
             localStorage.removeItem('userId');
             if (to.matched.some((record) => record.meta.requiresAuth)) {
                 next({ path: '/login' }); // Redirect to login if token is invalid and accessing protected routes

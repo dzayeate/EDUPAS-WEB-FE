@@ -1,6 +1,6 @@
 <template>
-    <div class="h-64 w-full">
-        <canvas ref="canvas"></canvas>
+    <div class="h-64">
+        <canvas ref="canvas" class="flex flex-row max-w-full"></canvas>
     </div>
 </template>
 
@@ -23,17 +23,29 @@ export default defineComponent({
                 type: 'bar', // Tentukan jenis chart di sini
                 data: props.data,
                 options: {
+                    plugins: {
+                        legend: {
+                            display: false, // Menyembunyikan tulisan "Jumlah Pendaftar"
+                        },
+                    },
                     scales: {
                         x: {
                             grid: {
                                 display: false,
-                            },                            
+                            },
                             categoryPercentage: 0.8, // Mengatur ukuran kategori
                         },
-                        y: {                            
+                        y: {
                             beginAtZero: true,
+                            ticks: {
+                                display: false,
+                                stepSize: 5,
+                            },
+                            grid: {
+                                drawTicks: false,
+                            },
                             min: 0, // Nilai minimum sumbu Y
-                            max: 50, // Nilai maksimum sumbu Y (sesuaikan dengan data)
+                            max: 25, // Nilai maksimum sumbu Y (sesuaikan dengan data)
                         },
                     },
                     datasets: {

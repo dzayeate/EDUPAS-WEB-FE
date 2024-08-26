@@ -46,7 +46,7 @@
                     id="default-search"
                     class="block w-full py-2 px-3 pe-10 text-sm text-black border border-[#C2C2C2] rounded-md bg-white placeholder-[#757575] focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
                     placeholder="Search Event"
-                    v-model="search"
+                    v-model="search.keyword"
                 />
             </div>
         </form>
@@ -60,18 +60,35 @@
                 {{ v }}
             </div>
         </div>
-        <div class="flex gap-7 justify-start mx-5" v-if="contests">
+        <v-icon
+            name="ri-refresh-line"
+            class="text-gray-400 my-10 w-full"
+            speed="slow"
+            scale="4"
+            animation="spin"
+            v-if="isLoading"
+        />
+        <div v-else-if="contests.length === 0" class="text-center">
+            <h2
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-semibold italic text-lg mx-auto my-16"
+            >
+                Data Tidak Ditemukan
+            </h2>
+        </div>
+        <div
+            v-else
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-5"            
+        >
             <EventCard
                 v-for="(v, i) in contests"
                 :key="i"
                 :slug="v.id"
-                :image="v.banner"
+                :image="v.thumbnail?.previewUrl"
                 :title="v.name"
                 :description="v.description"
                 :discount="v.discount"
             />
-        </div>
-        <v-icon name="ri-refresh-line" class="text-gray-400 my-10 w-full" speed="slow" scale="4" animation="spin" v-if="isLoading"/>
+        </div>        
         <!-- <Loading v-else/> -->
         <div class="flex justify-end pt-5 text-colorPurple mx-5">
             <a href="/competition?type=list">Lainnya</a>
@@ -99,7 +116,6 @@
 import HeaderView from '@/components/header/HeaderView.vue';
 import EventCard from '@/components/card/EventCard.vue';
 import { useMeta } from 'vue-meta';
-import Cookies from 'js-cookie';
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
 import { RiRefreshLine } from 'oh-vue-icons/icons';
 
@@ -109,14 +125,14 @@ export default {
     components: {
         HeaderView,
         EventCard,
-        VIcon: OhVueIcon
+        VIcon: OhVueIcon,
         // StepThree,
     },
     setup() {
         useMeta({ title: 'Home' });
     },
     data() {
-        return {            
+        return {
             filter: [
                 'Title Content',
                 'Title Content',
@@ -130,7 +146,11 @@ export default {
             },
             isSkipped: false,
             step: 1,
-            search: '',
+            search: {
+                page: '',
+                length: 4,
+                keyword: '',
+            },
         };
     },
     computed: {
@@ -141,33 +161,26 @@ export default {
             return this.$store.getters['user/userDetail'];
         },
         isLoading() {
-            return this.$store.getters['contest/isLoading']
-        }
-    },    
+            return this.$store.getters['contest/isLoading'];
+        },
+    },
     async mounted() {
         await this.getData();
     },
     methods: {
-        async getData() {            
+        async getData() {
             try {
-                await this.$store.dispatch('contest/getContest');                
+                await this.$store.dispatch('contest/getContest', this.search);
             } catch (err) {
                 console.log(err);
             }
         },
         async performSearch() {
             try {
-                await this.$store.dispatch('contest/getContest', this.search);
-                // this.isLoading = false;
+                await this.$store.dispatch('contest/getContest', this.search);                
             } catch (err) {
                 console.log(err);
             }
-        },
-        skipHandler() {
-            Cookies.set('isSkipped', true, {
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-            });
-            this.isSkipped = true;
         },
     },
 };

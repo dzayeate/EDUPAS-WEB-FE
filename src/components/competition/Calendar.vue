@@ -23,14 +23,17 @@
                 </div>
                 <div v-else class="text-center font-bold empty"></div>
                 <div class="mt-2">
-                    <div
-                        v-if="contests"
-                        v-for="competition in day.competitions"
-                        :key="competition.id"
-                        class="mb-2 text-neutral70-default"
-                    >
-                        {{ competition.name }}
-                    </div>
+                    <ul>
+                        <li
+                            v-if="contests"
+                            v-for="competition in day.competitions"
+                            :key="competition.id"
+                            class="mb-2 bg-customBlue text-white rounded-full px-3 py-1 w-fit text-sm"
+                        >
+                            
+                            {{ competition.name }}
+                        </li>
+                    </ul>                    
                 </div>
             </div>
         </div>
@@ -39,10 +42,15 @@
 
 <script>
 import Datepicker from 'vue3-datepicker';
+import { OhVueIcon, addIcons } from 'oh-vue-icons';
+import { BiCircleFill } from 'oh-vue-icons/icons';
+
+addIcons(BiCircleFill)
 
 export default {
     components: {
         Datepicker,
+        VIcon: OhVueIcon
     },
     data() {
         return {
@@ -56,7 +64,7 @@ export default {
     },
     computed: {
         highlightedDates() {
-            return this.competitions.map((comp) => new Date(comp.date));
+            return this.competitions.map((comp) => new Date(comp.startDate));
         },
         contests() {
             return this.$store.getters['contest/contests'];
@@ -91,7 +99,7 @@ export default {
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(year, month, day);
                 const competitions = this.competitions.filter((comp) => {
-                    const compDate = new Date(comp.date);
+                    const compDate = new Date(comp.startDate);
                     return (
                         compDate.getFullYear() === year &&
                         compDate.getMonth() === month &&

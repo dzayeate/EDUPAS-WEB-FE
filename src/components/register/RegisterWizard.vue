@@ -35,16 +35,14 @@ export default {
             },
         };
     },
-    // async mounted() {
-    //     const userId = localStorage.getItem("userId");
-    //     if (this.userDetail?.role.name == "Umum") {
-    //         this.currentStep = 2;
-    //     } else if (userId) {
-    //         await this.$router.push("profile");
-    //         console.log('yang wizard');
-            
-    //     }
-    // },
+    async mounted() {
+        const userId = localStorage.getItem("userId");
+        if (this.userDetail?.role.name == "Umum") {
+            this.currentStep = 2;
+        } else if (userId) {
+            await this.$router.push("profile");                        
+        }
+    },
     computed: {
         currentStepComponent() {
             return {

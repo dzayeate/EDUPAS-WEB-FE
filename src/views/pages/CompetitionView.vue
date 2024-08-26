@@ -25,7 +25,7 @@
                 </a>
             </div>
         </div>
-        <ListView v-if="$route.query.type === 'list'" />
+        <ListView v-if="$route.query.type === 'list' || !$route.query.type" />
         <Calendar v-if="$route.query.type === 'calendar'" />
     </div>
 </template>
@@ -57,10 +57,15 @@ export default {
                 'Title Content',
                 'Title Content',
             ],
+            search: {
+                page: 1,
+                length: 0,
+                keyword: ''
+            }
         };
     },
     async mounted() {
-        await this.getData();
+        await this.getData();        
     },
     computed: {
         contests() {
@@ -70,7 +75,7 @@ export default {
     methods: {
         async getData() {
             try {
-                await this.$store.dispatch('contest/getContest');                
+                await this.$store.dispatch('contest/getContest', this.search);                
             } catch (err) {
                 console.log(err);
             }

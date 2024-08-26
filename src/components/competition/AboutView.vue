@@ -1,15 +1,16 @@
 <template>
-    
     <div v-if="isLoading" class="w-ful h-96 flex items-center">
-        <v-icon name="ri-refresh-line" class="text-gray-400 items-center w-full" speed="slow" scale="4" animation="spin" />
+        <v-icon
+            name="ri-refresh-line"
+            class="text-gray-400 items-center w-full"
+            speed="slow"
+            scale="4"
+            animation="spin"
+        />
     </div>
     <div v-else>
         <div class="w-full py-3">
-            <img
-                class="object-cover w-full"
-                :src="bannerUrl"
-                alt=""
-            />
+            <img class="object-cover w-full" :src="bannerUrl" alt="" />
         </div>
         <div class="flex flex-col py-[12px]">
             <h2 class="font-medium text-[28px] leanding-[36px]">
@@ -148,10 +149,10 @@
                                 </h3>
                                 <div
                                     v-if="
-                                        contestDetail?.sponsor &&
-                                        contestDetail.sponsor.length > 0
+                                        contestDetail?.organize &&
+                                        contestDetail.organize.length > 0
                                     "
-                                    v-for="(v, i) in contestDetail.sponsor"
+                                    v-for="(v, i) in contestDetail.organize"
                                     :key="i"
                                     class="flex items-center gap-2"
                                 >
@@ -246,10 +247,16 @@
                                 Register
                             </button>
                         </div>
+                        <p class="flex justify-center gap-1" v-if="messageRegister">
+                            <span>
+                                <v-icon name="bi-info-circle" />
+                            </span>
+                            {{ messageRegister }}
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </template>
 
@@ -257,18 +264,18 @@
 import HeaderView from '@/components/header/HeaderView.vue';
 import Loading from 'vue3-loading-overlay';
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { RiRefreshLine } from 'oh-vue-icons/icons';
+import { RiRefreshLine, BiInfoCircle } from 'oh-vue-icons/icons';
 
-addIcons(RiRefreshLine);
+addIcons(RiRefreshLine, BiInfoCircle);
 
 export default {
     components: {
         HeaderView,
         Loading,
-        VIcon: OhVueIcon
+        VIcon: OhVueIcon,
     },
     data() {
-        return {            
+        return {
             filter: [
                 'Title Content',
                 'Title Content',
@@ -277,7 +284,7 @@ export default {
                 'Title Content',
                 'Title Content',
             ],
-            bannerUrl: ''
+            bannerUrl: '',
         };
     },
     computed: {
@@ -289,21 +296,70 @@ export default {
         },
         isEligibleForRegistration() {
             const allowedRoles = ['Siswa', 'Mahasiswa'];
+            const date = new Date();
+            const lombaStartDate = new Date(this.contestDetail?.startDate);
+            const activities = this.userDetail?.activities?.map(activity => activity.competitionId);
+            const competitionId = this.$route.params.slug;
+
+            date.setHours(0, 0, 0, 0);
+            lombaStartDate.setHours(0, 0, 0, 0);
+
             return (
                 allowedRoles.includes(this.userDetail?.role?.name) &&
-                this.userDetail?.isVerified
+                this.userDetail?.isVerified && date <= lombaStartDate && 
+                !activities?.includes(competitionId)
             );
         },
         isLoading() {
             return this.$store.getters['contest/isLoading'];
-        }
+        },
+        messageRegister() {
+            const date = new Date();
+            const lombaStartDate = new Date(this.contestDetail?.startDate);
+            const lombaEndDate = new Date(this.contestDetail?.endDate);
+            const allowedRoles = ['Siswa', 'Mahasiswa'];
+            const activities = this.userDetail?.activities?.map(activity => activity.competitionId);
+            const competitionId = this.$route.params.slug;
+
+            date.setHours(0, 0, 0, 0);
+            lombaStartDate.setHours(0, 0, 0, 0);
+            lombaEndDate.setHours(0, 0, 0, 0);
+
+            // jika tanggal lomba sudah terlewat
+            if (date > lombaEndDate) {
+                return 'Kegiatan sudah selesai';
+            } 
+            else if (date >= lombaStartDate && date <= lombaEndDate && !activities?.includes(competitionId)) {
+                return 'Kegiatan sedang berlangsung'
+            } 
+            // jika user belum login
+            else if (!this.userDetail) {
+                return 'Silahkan Login terlebih dahulu'
+            } 
+            // jika role siswa dan mahasiswa tapi akun belum terverifikasi
+            else if (allowedRoles.includes(this.userDetail?.role?.name) && !this.userDetail?.isVerified) {
+                return 'Akun sedang diverifikasi';
+            } 
+            // jika role umum
+            else if (this.userDetail?.role?.name == 'Umum') {
+                return 'Akun belum terverifikasi'
+            } 
+            // jika siswa sudah mendaftar lomba 
+            else if (activities?.includes(competitionId)) {
+                return 'Anda sudah mendaftar kegiatan ini'
+            } 
+            else {
+                return '';
+            }
+            
+        },
     },
     created() {
-        const url = this.contestDetail?.banner
+        const url = this.contestDetail?.banner?.previewUrl;
         if (url == null) {
-            this.bannerUrl = 'https://via.placeholder.com/900x200'            
+            this.bannerUrl = 'https://via.placeholder.com/900x200';
         } else {
-            this.bannerUrl = url
+            this.bannerUrl = url;
         }
     },
     methods: {
