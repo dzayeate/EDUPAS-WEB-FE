@@ -60,8 +60,7 @@ const routes = [
 
                             if (roleName === 'Umum') {
                                 next((vm) => {
-                                    vm.currentStep = 2;                                    
-                                    
+                                    vm.currentStep = 2;
                                 });
                             } else if (
                                 roleName === 'Siswa' ||
@@ -102,7 +101,6 @@ const routes = [
                     const roleName =
                         store.getters['user/userDetail']?.role?.name;
 
-<<<<<<< HEAD
                     if (
                         roleName === 'Eo' ||
                         roleName === 'Admin' ||
@@ -115,15 +113,6 @@ const routes = [
                     }
                 } catch (error) {
                     next(from.fullPath); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
-=======
-                    if (roleName === 'Eo') {
-                        next();
-                    } else {
-                        next('/'); // atau rute lain jika pengguna tidak memiliki akses
-                    }
-                } catch (error) {
-                    next('/'); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
->>>>>>> main
                 }
             }
         },
@@ -146,7 +135,6 @@ const routes = [
                 path: '/dashboard/user',
                 name: 'User Dashboard',
                 component: () => import('@/views/pages/dashboard/UserView.vue'),
-<<<<<<< HEAD
                 beforeEnter: async (to, from, next) => {
                     const userId = localStorage.getItem('userId');
 
@@ -171,8 +159,6 @@ const routes = [
                         }
                     }
                 },
-=======
->>>>>>> main
             },
         ],
     },
