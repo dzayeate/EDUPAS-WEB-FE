@@ -65,3 +65,37 @@
 .custom-input {
     @apply border-[#C2C2C2] focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-1 text-sm text-black border  rounded-[6px] placeholder-[#757575] focus:outline-none
 }
+
+.select-input {
+    @apply max-h-44 overflow-y-auto
+}
+
+.success-popup {
+    @apply w-[20rem] px-5 !important
+}
+.success-icon {
+    @apply text-sm !important
+}
+
+.success-title {
+    @apply font-medium text-[#404040] pt-2 px-0
+}
+.success-button {
+    @apply rounded-md  text-sm px-5 py-2 font-medium mx-6 focus:ring-0 !important
+}
+
+.delete-popup {
+    @apply w-[22rem] px-5 !important
+}
+
+.delete-title {
+    @apply font-medium text-[#404040] border-b border-b-[#C2C2C2] pb-3 px-0
+}
+
+.delete-confirmButton, .delete-cancelButton {
+    @apply rounded-md  text-sm px-5 py-2 font-medium mx-6 focus:ring-0 !important
+}
+
+.delete-html, .success-html {
+    @apply text-sm !important
+}

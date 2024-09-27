@@ -35,7 +35,7 @@
                 <a
                     @click.prevent="navigateToCompetition('certification')"
                     :class="`${
-                        $route.query.type === 'certification'
+                        $route.query.type === 'certification' || $route.query.type === 'competition-detail'
                             ? 'text-customBlue border-b-[1px] border-customBlue'
                             : 'text-black'
                     } cursor-pointer`"
@@ -44,7 +44,12 @@
                 </a>
             </div>
         </div>
-        <div class="flex items-center gap-4 py-[24px]">
+        <CertificationDetail
+            v-if="
+                $route.query.type === 'competition-detail'
+            "
+        />
+        <div v-else class="flex items-center gap-4 py-[24px]">
             <div class="flex gap-6 w-full">
                 <div class="w-full min-h-screen flex flex-col items-center">
                     <div
@@ -101,7 +106,7 @@
                                         {{
                                             userDetail?.biodate.institutionName
                                                 ? userDetail.biodate
-                                                      .institutionName
+                                                    .institutionName
                                                 : ''
                                         }}
                                     </p>
@@ -142,6 +147,7 @@
                 </div>
             </div>
         </div>
+        
 
         <!-- Modal -->
         <transition name="modal">
@@ -161,6 +167,7 @@ import ProfileView from '@/components/profile/ProfileView.vue';
 import ActivityView from '@/components/profile/ActivityView.vue';
 import EducationView from '@/components/profile/EducationView.vue';
 import CertificationView from '@/components/profile/CertificationView.vue';
+import CertificationDetail from '@/components/profile/CertificationDetail.vue';
 import EditProfile from '@/components/modal/EditProfile.vue';
 import EditAbout from '@/components/modal/EditAbout.vue';
 import EditSkill from '@/components/modal/EditSkill.vue';
@@ -182,6 +189,7 @@ export default {
         EditSkill,
         EditEducation,
         ProfilePhoto,
+        CertificationDetail
     },
     data() {
         return {

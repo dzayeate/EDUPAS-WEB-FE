@@ -9,7 +9,7 @@
             <div
                 class="bg-white px-5 py-6 h-fit rounded-lg shadow-chart flex flex-row items-center gap-5"
             >
-                <DoughnutChart :data="doughnutData" class="w-[8.5rem] -mt-2" />
+                <DoughnutChart :data="doughnutData" :key="participants" class="w-[8.5rem] -mt-2" />
                 <div class="flex flex-col w-full gap-10 justify-between">
                     <p class="font-medium text-sm flex justify-between">
                         Total Peserta
@@ -60,7 +60,7 @@
                 <DoughnutChart :data="doughnutData3" class="w-[9rem] -mt-2" />
                 <div class="flex flex-col w-full gap-10 justify-between">
                     <p class="font-medium text-sm flex justify-between">
-                        Jumlah Kompetisi
+                        Gender Audience
                         <span>
                             <v-icon
                                 name="oi-kebab-horizontal"
@@ -133,7 +133,7 @@
         class="bg-white px-5 py-3 rounded-lg shadow-chart flex flex-col w-full"
     >
         <div class="flex flex-row justify-between -mb-5 items-center">
-            <h2 class="font-medium text-base font-poppins">Jumlah Pendaftar</h2>
+            <h2 class="font-medium text-base font-poppins">Total Usia Audience</h2>
             <v-icon name="oi-kebab-horizontal" class="rotate-90" />
         </div>
         <BarChart :data="barData" class="w-auto" />
@@ -145,6 +145,7 @@ import DoughnutChart from './DoughnutChart.vue';
 import BarChart from './BarChart.vue';
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
 import { OiKebabHorizontal, HiSolidArrowSmUp} from 'oh-vue-icons/icons';
+import ApiService from '@/store/api.service';
 
 addIcons(OiKebabHorizontal, HiSolidArrowSmUp);
 
@@ -154,22 +155,30 @@ export default {
         BarChart,
         VIcon: OhVueIcon,
     },
+    computed: {
+        userDetail() {
+            return this.$store.getters['user/userDetail'];
+        },
+        doughnutData() {
+            return {
+                labels: '',
+                datasets: [
+                    {
+                        data: [this.participants || 0, 100 - (this.participants || 0)],
+                        backgroundColor: ['#3267E3', '#B1C5F6'],
+                    },
+                ],
+            }
+        }
+    },
     data() {
         return {
+            participants: null,
             registrants: [
                 { name: 'Nama', date: '04/20/2024' },
                 { name: 'Nama', date: '04/20/2024' },
                 { name: 'Nama', date: '04/20/2024' },
-            ],
-            doughnutData: {
-                labels: '',
-                datasets: [
-                    {
-                        data: [12, 88],
-                        backgroundColor: ['#3267E3', '#B1C5F6'],
-                    },
-                ],
-            },
+            ],            
             doughnutData2: {
                 labels: '',
                 datasets: [
@@ -199,26 +208,31 @@ export default {
             },
             barData: {
                 labels: [
-                    'Senin',
-                    'Selasa',
-                    'Rabu',
-                    'Kamis',
-                    'Jumat',
-                    'Sabtu',
-                    'Minggu',
+                    '18 Tahun',
+                    '19 Tahun',
+                    '20 Tahun',
+                    '21 Tahun',
+                    '22 Tahun',
+                    '23 Tahun',
+                    '24 Tahun',
+                    '25 Tahun',
                 ],
                 datasets: [
                     {
                         backgroundColor: '#3490dc',
-                        data: [5, 10, 3, 15, 7, 2, 10],
+                        data: [5, 10, 3, 15, 7, 2, 10, 10],
                     },
                 ],
             },
         };
     },
+    async mounted() {
+        const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+        if (this.userDetail?.role.name === "Admin" || this.userDetail?.role.name === "Eo") {
+            const response = await ApiService.get('admin/team');
+            const filteredData = response.data.data.filter(item => item.month === currentMonth);
+            this.participants = filteredData[0].totalParticipants;                                                            
+        }
+    }
 };
 </script>
-
-<style scoped>
-/* Tambahkan styling tambahan jika diperlukan */
-</style>

@@ -10,6 +10,7 @@
                 :image="item.image"
             />
             <div
+                v-if="!hideButton"
                 class=" w-40 shadow-card rounded-lg p-4 m-2 flex items-center justify-center"
             >
                 <v-icon name="bi-plus" scale="4" class="text-gray-400"/>
@@ -39,7 +40,11 @@ export default {
             type: Array,
             required: true,
         },
-    },
+        hideButton: {
+            type: Boolean,
+            default: false
+        }
+    },    
 };
 </script>
 

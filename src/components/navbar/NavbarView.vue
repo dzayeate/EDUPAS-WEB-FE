@@ -31,26 +31,15 @@
                     >
                 </li>
                 <li class="mr-4">
-                    <a
-                        v-if="['/', '/competition'].includes($route.path)"
-                        @click="navigateTo('competition')"
+                    <a                                                
+                        href="/competition"
                         :class="`${
                             isCompetitionSectionInView
                                 ? 'font-medium text-customBlue'
                                 : 'font-normal text-colorText'
                         } cursor-pointer block px-4 py-2 font-medium hover:opacity-[0.8]`"
                         >Competition</a
-                    >
-                    <a
-                        v-else
-                        @click="navigateAndScrollTo('HomeView', 'competition')"
-                        :class="`${
-                            isCompetitionSectionInView
-                                ? 'font-medium text-customBlue'
-                                : 'font-normal text-colorText'
-                        } cursor-pointer block px-4 py-2 font-medium hover:opacity-[0.8]`"
-                        >Competition</a
-                    >
+                    >                    
                 </li>
                 <li class="py-2">
                     <a
@@ -175,8 +164,8 @@
                         >
                     </li>
                     <li class="mr-4">
-                        <a
-                            v-if="['/competition'].includes($route.path)"
+                        <a                            
+                            href="/competition"
                             :class="[
                                 'cursor-pointer',
                                 'font-medium',
@@ -188,24 +177,7 @@
                                 'hover:opacity-[0.8]',
                             ]"
                             >Competition</a
-                        >
-                        <a
-                            v-else
-                            @click="
-                                navigateAndScrollTo('HomeView', 'competition')
-                            "
-                            :class="[
-                                'cursor-pointer',
-                                'font-medium',
-                                isCompetitionSectionInView
-                                    ? 'text-customBlue'
-                                    : 'text-colorText',
-                                'transition-colors',
-                                'duration-300',
-                                'hover:opacity-[0.8]',
-                            ]"
-                            >Competition</a
-                        >
+                        >                        
                     </li>
                     <li class="mr-4">
                         <a

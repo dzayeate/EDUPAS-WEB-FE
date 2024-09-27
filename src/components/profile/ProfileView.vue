@@ -12,7 +12,7 @@
       :src="require('@/assets/icons/icon-edit.svg')"
       alt="Edit"
       @click="showAbout"
-      class="cursor-pointer w-7"
+      class="cursor-pointer w-7 hidden"
     />
   </div>
   <div class="py-3">
@@ -22,7 +22,7 @@
         :src="require('@/assets/icons/icon-edit.svg')"
         alt="Edit"
         @click="showSkill"
-        class="cursor-pointer w-7"
+        class="cursor-pointer w-7 hidden"
       />
     </div>
     <ul v-if="skills.length" class="list-disc list-inside text-gray-600">

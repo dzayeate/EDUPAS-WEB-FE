@@ -1,12 +1,16 @@
 <template>
     <div v-if="isLoading" class="w-ful h-96 flex items-center">
         <v-icon
-            name="ri-refresh-line"
-            class="text-gray-400 items-center w-full"
-            speed="slow"
-            scale="4"
-            animation="spin"
+        name="ri-refresh-line"
+        class="text-gray-400 items-center w-full"
+        speed="slow"
+        scale="4"
+        animation="spin"
         />
+    </div>
+    <div v-else-if="isError"  class="w-ful h-96 flex items-center justify-center gap-1 text-lg italic text-red-600">
+        <v-icon name="bi-info-circle"/>
+        <h2>Gagal Memuat Data</h2>
     </div>
     <div v-else>
         <div class="w-full py-3">
@@ -173,7 +177,7 @@
                                         alt=""
                                         class="w-contain"
                                     />
-                                    Tidak ada sponsor
+                                    Tidak Ada Organize
                                 </div>
                             </div>
                         </div>
@@ -312,6 +316,9 @@ export default {
         },
         isLoading() {
             return this.$store.getters['contest/isLoading'];
+        },
+        isError() {
+            return this.$store.getters['contest/isError'];
         },
         messageRegister() {
             const date = new Date();

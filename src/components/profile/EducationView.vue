@@ -7,7 +7,7 @@
           @click="$emit('showModalEducation')"
           :src="require('@/assets/icons/icon-edit.svg')"
           alt="Edit"
-          class="cursor-pointer w-7"
+          class="cursor-pointer w-7 hidden"
         />
       </div>
       <div v-if="education">
