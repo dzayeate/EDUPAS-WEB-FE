@@ -79,7 +79,7 @@
 
 <script>
 import AboutView from '@/components/competition/dashboard/AboutView.vue';
-import RegisterView from '@/components/competition/dashboard/register/RegisterView.vue';
+import RegisterView from '@/components/competition/dashboard/register/TableRegister.vue';
 import ScheduleView from '@/components/competition/dashboard/schedule/ScheduleView.vue';
 import OrganizerView from '@/components/competition/dashboard/OrganizerView.vue';
 import ContributorView from '@/components/competition/dashboard/contributor/ContributorView.vue';
@@ -106,27 +106,36 @@ export default {
             ],
         };
     },
-    //   async mounted() {
-    //     await this.getData();
-    //   },
+    async mounted() {
+        await this.getData();
+    },
     computed: {},
     methods: {
-        // async getData() {
-        //     try {
-        //         await this.$store.dispatch(
-        //             'contest/getContestDetail',
-        //             this.$route.params.slug,
-        //         );
-        //     } catch (err) {
-        //         console.log(err);
-        //     }
-        // },
+        async getData() {
+            try {
+                await this.$store.dispatch(
+                    'contest/getContestDetail',
+                    this.$route.query.id,
+                );
+            } catch (err) {
+                console.log(err);
+            }
+        },
         navigateToCompetition(value) {
+            const id = this.$route.query.id;
+
+            const query = { type: value };
+            
+            // Jika id ada, tambahkan ke query
+            if (id) {
+                query.id = id;
+            }
+
             this.$router.push({
                 name: 'Competition Dashboard',
-                query: { type: value },
+                query: query,
             });
-        },
+        }
     },
 };
 </script>

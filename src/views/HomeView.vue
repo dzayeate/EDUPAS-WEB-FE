@@ -68,11 +68,34 @@
             animation="spin"
             v-if="isLoading"
         />
-        <div v-else-if="contests.length === 0" class="text-center">
+        <div v-else-if="isError" class="text-center">
             <h2
-                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-semibold italic text-lg mx-auto my-16"
+                class="px-3 py-2 bg-red-600 w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
             >
-                Data Tidak Ditemukan
+                <span>
+                    <v-icon name="bi-info-circle" class="space-x-3"/>
+                </span>
+                Gagal memuat data
+            </h2>
+        </div>
+        <div v-else-if="contests.length === 0 && searchPerformed" class="text-center">
+            <h2
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+            >
+                <span>
+                    <v-icon name="bi-info-circle" class="space-x-3"/>
+                </span>
+                Data tidak ditemukan
+            </h2>
+        </div>
+        <div v-else-if="contests.length === 0 && !searchPerformed"  class="text-center">
+            <h2
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+            >
+                <span>
+                    <v-icon name="bi-info-circle" class="space-x-3"/>
+                </span>
+                Belum ada kompetisi
             </h2>
         </div>
         <div
@@ -117,9 +140,9 @@ import HeaderView from '@/components/header/HeaderView.vue';
 import EventCard from '@/components/card/EventCard.vue';
 import { useMeta } from 'vue-meta';
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { RiRefreshLine } from 'oh-vue-icons/icons';
+import { RiRefreshLine, BiInfoCircle } from 'oh-vue-icons/icons';
 
-addIcons(RiRefreshLine);
+addIcons(RiRefreshLine, BiInfoCircle);
 
 export default {
     components: {
@@ -140,17 +163,13 @@ export default {
                 'Title Content',
                 'Title Content',
                 'Title Content',
-            ],
-            data: {
-                roleName: 'umum',
-            },
-            isSkipped: false,
-            step: 1,
+            ],                                    
             search: {
                 page: '',
                 length: 4,
                 keyword: '',
             },
+            searchPerformed: false,
         };
     },
     computed: {
@@ -163,24 +182,17 @@ export default {
         isLoading() {
             return this.$store.getters['contest/isLoading'];
         },
+        isError() {
+            return this.$store.getters['contest/isError'];
+        },
     },
     async mounted() {
-        await this.getData();
+        await this.$store.dispatch('contest/getContest', this.search);
     },
-    methods: {
-        async getData() {
-            try {
-                await this.$store.dispatch('contest/getContest', this.search);
-            } catch (err) {
-                console.log(err);
-            }
-        },
+    methods: {        
         async performSearch() {
-            try {
-                await this.$store.dispatch('contest/getContest', this.search);                
-            } catch (err) {
-                console.log(err);
-            }
+            this.searchPerformed = true;
+            await this.$store.dispatch('contest/getContest', this.search);                            
         },
     },
 };

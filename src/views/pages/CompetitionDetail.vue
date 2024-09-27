@@ -1,6 +1,6 @@
 <template>
     <div id="competition" class="px-[16px] md:px-[42px] py-[24px]">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center pb-10">
             <div class="flex gap-6">
                 <a
                     @click.prevent="navigateToCompetition('about')"
@@ -55,17 +55,15 @@
                 </a>
             </div>
         </div>
-        <div class="py-6">
-            <AboutView
-                v-if="!$route.query.type || $route.query.type === 'about'"
-            />
-            <RegisterView
-                v-if="$route.query.type === 'registration' && !isValid"
-            />
-            <ScheduleView v-if="$route.query.type === 'schedule'" />
-            <OrganizerView v-if="$route.query.type === 'organizers'" />
-            <ContributorView v-if="$route.query.type === 'contributors'" />
-        </div>
+        <AboutView
+            v-if="!$route.query.type || $route.query.type === 'about'"
+        />
+        <RegisterView
+            v-if="$route.query.type === 'registration' && !isValid"
+        />
+        <ScheduleView v-if="$route.query.type === 'schedule'" />
+        <OrganizerView v-if="$route.query.type === 'organizers'" />
+        <ContributorView v-if="$route.query.type === 'contributors'" />        
     </div>
 </template>
 
@@ -134,6 +132,18 @@ export default {
             });
         },
         redirectIfInvalid() {
+            const validTypes = ['about', 'registration', 'schedule', 'organizers', 'contributors'];
+            const currentType = this.$route.query.type || 'about';
+
+            // Redirect to 'about' if the type is not valid
+            if (!validTypes.includes(currentType)) {
+                this.$router.replace({
+                    name: 'Competition Detail',
+                    query: { type: 'about' },
+                });
+            }
+
+            // Existing redirect logic
             const activities = this.userDetail?.activities?.map(
                 (activity) => activity.competitionId,
             );
@@ -141,7 +151,6 @@ export default {
             const date = new Date();
             const lombaDate = new Date(this.contestDetail?.endDate);
             const allowedRoles = ['Siswa', 'Mahasiswa'];            
-            
             if (
                 (this.$route.query.type === 'registration' &&
                     (!this.userDetail || activities?.includes(competitionId) ||
@@ -153,6 +162,17 @@ export default {
                 });                
             }
         },
+        watch: {
+            '$route.query.type': 'redirectIfInvalid'
+        },
+        beforeRouteUpdate(to, from, next) {
+            const validTypes = ['about', 'registration', 'schedule', 'organizers', 'contributors'];
+            if (!validTypes.includes(to.query.type || 'about')) {
+                next({ name: 'Competition Detail', query: { type: 'about' } });
+            } else {
+                next();
+            }
+        }
     },
 };
 </script>

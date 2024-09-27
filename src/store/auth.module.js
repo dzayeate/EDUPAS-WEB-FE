@@ -47,7 +47,7 @@ const actions = {
             localStorage.setItem('token', token);
             // Cookies.set('token', token, { expires: 7 }); // Token expires in 7 days            
             
-            await router.push('/')
+            await router.push('/competition')
             
             return data;
         } catch (err) {

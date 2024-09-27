@@ -53,13 +53,13 @@
                         :discount="v.discount"
                     />
                 </div>
-                <div class="flex justify-between items-center">
+                <div class="justify-between items-center hidden">
                     <h3 class="text-lg font-semibold mb-2">
                         Riwayat Kompetisi
                     </h3>
                 </div>
                 <div
-                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-48"
+                    class=" grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-48 hidden"
                 >
                     <CardView v-for="i in 3" :key="i" :isActivities="true" />
                 </div>

@@ -14,7 +14,7 @@
                 :placeholder="placeholderText"
             />
         </div>
-        <button @click="addItem" class="flex items-center text-blue-500 mt-2">
+        <button v-if="!shouldHideButton" @click="addItem" class="flex items-center text-blue-500 mt-2">
             <v-icon name="fa-plus" scale="0.7" class="mr-1" />
             Tambah {{ itemType }}
         </button>
@@ -60,8 +60,23 @@ export default {
             this.updateItems();
         },
         updateItems() {
-            this.$emit('update-items', this.items);
+            this.$emit('update-items', [...this.items]);
+        },        
+    },
+    computed: {
+        userDetail() {
+            return this.$store.getters['user/userDetail'];
         },
+        shouldHideButton() {
+            // Cek apakah role adalah Admin atau Sponsor
+            return ['Admin', 'Sponsor'].includes(this.userDetail.role.name);
+        }
+    },
+    watch: {
+        // Watch for changes in initialItems prop and update items accordingly
+        initialItems(newItems) {
+            this.items = [...newItems]; // Reassign items when initialItems prop changes
+        }
     },
 };
 </script>

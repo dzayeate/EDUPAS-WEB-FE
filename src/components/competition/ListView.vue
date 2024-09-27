@@ -63,20 +63,34 @@
             <option value="DE">Germany</option>
         </select>
     </div>
-    <div class="container mx-auto mb-12">
+    <div class="container mx-auto mb-12">        
         <v-icon
+            v-if="isLoading"
             name="ri-refresh-line"
             class="text-gray-400 my-10 w-full"
             speed="slow"
             scale="4"
             animation="spin"
-            v-if="isLoading"
         />
-        <div v-else-if="contests.length === 0" class="text-center">
+        <div v-else-if="isError" class="text-center">
             <h2
-                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-semibold italic text-lg mx-auto my-16"
+                class="px-3 py-2 bg-red-600 w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
             >
-                Data Tidak Ditemukan
+                Gagal memuat data
+            </h2>
+        </div>
+        <div v-else-if="contests.length === 0 && searchPerformed" class="text-center">
+            <h2
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+            >
+                Data tidak ditemukan
+            </h2>
+        </div>
+        <div v-else-if="contests.length === 0 && !searchPerformed"  class="text-center">
+            <h2
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+            >
+                Belum ada kompetisi
             </h2>
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -110,9 +124,10 @@ export default {
         return {
             search: {
                 page: '',
-                length: 4,
+                length: '',
                 keyword: '',
             },
+            searchPerformed: false,
         }
     },
     computed: {
@@ -121,16 +136,15 @@ export default {
         },
         isLoading() {
             return this.$store.getters['contest/isLoading'];
-        }
+        },
+        isError() {
+            return this.$store.getters['contest/isError'];
+        },
     },
     methods: {
         async performSearch() {
-            try {
-                await this.$store.dispatch('contest/getContest', this.search);
-                // this.isLoading = false;
-            } catch (err) {
-                console.log(err);
-            }
+            this.searchPerformed = true;            
+            await this.$store.dispatch('contest/getContest', this.search);                    
         },
     }
     

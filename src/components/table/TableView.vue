@@ -17,7 +17,23 @@
                     </tr>
                 </thead>
                 <tbody class="text-neutral-700 text-sm font-normal">
+                    <tr v-if="isLoading">
+                        <td colspan="100%" class="py-4 px-6 text-center italic">
+                            Loading.....
+                        </td>
+                    </tr>
+                    <tr v-else-if="isError">
+                        <td colspan="100%" class="py-4 px-6 text-center italic">
+                            Gagal memuat data
+                        </td>
+                    </tr>
+                    <tr v-else-if="rows.length === 0 && !isLoading">
+                        <td colspan="100%" class="py-4 px-6 text-center italic">
+                            Belum ada data
+                        </td>
+                    </tr>
                     <tr
+                        v-else
                         v-for="(row, rowIndex) in rows"
                         :key="rowIndex"
                         class="border-b border-[#C2C2C2] hover:bg-gray-100"
@@ -35,6 +51,15 @@
                                 ]"
                             >
                                 {{ row[column.field] }}
+                            </span>
+                            <span
+                                v-else-if="column.field === 'isVerified'"
+                                :class="[
+                                    'px-2 rounded-lg text-center inline-block font-medium',
+                                    verifiedClass(row[column.field]),
+                                ]"
+                            >
+                                {{ verifiedText(row[column.field]) }}
                             </span>
                             <span v-else-if="column.field === 'aktivasi'">
                                 <ToggleSwitch
@@ -96,7 +121,15 @@ export default {
             type: Array,
             required: true,
         },
-    },
+        isLoading: {
+            type: Boolean,
+            default: false,
+        },
+        isError: {
+            type: Boolean,
+            default: false
+        }
+    },        
     methods: {
         handleUpdate(row) {
             row.isActive = !row.isActive;
@@ -110,6 +143,26 @@ export default {
                     return 'bg-blue-100 text-blue-800 border border-blue-400';
                 case 'Batal':
                     return 'bg-red-100 text-red-800 border border-red-400';
+                default:
+                    return 'bg-gray-100 text-gray-800 border border-gray-400';
+            }
+        },
+        verifiedClass(status) {
+            switch (status) {                
+                case true:
+                    return 'bg-blue-100 text-blue-800 border border-blue-400';
+                case false:
+                    return 'bg-red-100 text-red-800 border border-red-400';
+                default:
+                    return 'bg-gray-100 text-gray-800 border border-gray-400';
+            }
+        },
+        verifiedText(status) {
+            switch (status) {                
+                case true:
+                    return 'Verified';
+                case false:
+                    return 'Unverified';
                 default:
                     return 'bg-gray-100 text-gray-800 border border-gray-400';
             }

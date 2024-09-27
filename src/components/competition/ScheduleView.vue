@@ -8,6 +8,10 @@
             animation="spin"
         />
     </div>
+    <div v-else-if="isError"  class="w-ful h-96 flex items-center justify-center gap-1 text-lg italic text-red-600">
+        <v-icon name="bi-info-circle"/>
+        <h2>Gagal Memuat Data</h2>
+    </div>
     <div v-else>
         <div class="w-full py-3">
             <img class="object-cover w-full" :src="bannerUrl" alt="" />
@@ -22,7 +26,27 @@
                         {{ contestDetail?.description }}
                     </p>
                     <div class="border-t border-t-[#C2C2C2] py-[12px] w-full">
-                        <div class="w-1/2" v-if="schedule">
+                        <div
+                            v-if="isLoadingSchedule"
+                            class="flex items-center justify-center gap-2 text-base text-gray-500 mt-2 italic"
+                        >                            
+                            <p>Loading....</p>
+                        </div>
+                        <div
+                            v-else-if="isError"
+                            class="flex items-center justify-center gap-2 text-base text-gray-500 mt-2"
+                        >
+                            <v-icon name="bi-info-circle" />
+                            <p>Gagal memuat data</p>
+                        </div>
+                        <div
+                            v-else-if="schedule.length == 0"
+                            class="flex items-center justify-center gap-2 text-base text-gray-500 mt-2"
+                        >
+                            <v-icon name="bi-info-circle" />
+                            <p>Schedule Belum Tersedia</p>
+                        </div>                        
+                        <div v-else class="w-1/2">
                             <div class="flex flex-col">
                                 <div
                                     v-for="(event, index) in schedule"
@@ -52,13 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div
-                            v-if="schedule.length == 0"
-                            class="flex items-center justify-center gap-2 text-base text-gray-500 mt-2"
-                        >
-                            <v-icon name="bi-info-circle" />
-                            <p>Schedule Belum Tersedia</p>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="flex flex-col gap-4 w-1/3">
@@ -216,6 +234,12 @@ export default {
         isLoading() {
             return this.$store.getters['contest/isLoading'];
         },
+        isLoadingSchedule() {
+            return this.$store.getters['contest/isLoadingSchedule'];
+        },
+        isError() {
+            return this.$store.getters['contest/isError'];
+        },
         slug() {
             return this.$route.params.slug;
         },
@@ -249,19 +273,24 @@ export default {
 
             if (!this.userDetail) {
                 return '';
-            }else if (submissionIds.length > 0) {
+            }
+            // Mengubah kondisi role name menggunakan && dan perbandingan yang benar
+            else if (this.userDetail.role.name !== "Siswa" && this.userDetail.role.name !== "Mahasiswa") {
+                return '';
+            }
+            else if (submissionIds.length > 0) {
                 return 'Anda sudah mengumpulkan task';
             } 
             else if (
                 this.userDetail &&
                 !regis.includes(this.slug) &&
-                date < lombaStartDate
+                date <= lombaStartDate
             ) {
                 return 'Anda belum daftar kegiatan ini';
-            }  else {
-                return ''
+            } else {
+                return '';
             }
-        },
+        }
     },
     created() {
         const url = this.contestDetail?.banner?.previewUrl;
@@ -345,7 +374,6 @@ export default {
             // Mengembalikan waktu dalam format "HH:MM"
             return `${hours}:${minutes}`;
         },
-
         navigateToCompetition(value) {
             this.$router.push({
                 name: 'Competition Detail',

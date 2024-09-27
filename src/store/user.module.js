@@ -1,4 +1,3 @@
-import { log } from 'util';
 import ApiService from './api.service';
 import Swal from 'sweetalert2';
 import router from '@/router';
@@ -10,15 +9,21 @@ import router from '@/router';
 export const POST_FORGOT = 'postForgot';
 
 const state = {
+    users: [],
     userEmail: null,
     userDetail: null,
     emailCorrected: '',
     passwordStrength: '',
     passwordConfirmed: '',
-    registration: []
+    registration: [],
+    isLoading: false,
+    isError: false,
 };
 
 const mutations = {
+    setUsers(state, data) {
+        state.users = data;
+    },
     setUserDetails(state, data) {
         state.userDetail = data;
     },
@@ -37,23 +42,38 @@ const mutations = {
     setPasswordConfirmed(state, data) {
         state.passwordConfirmed = data;
     },
+    setLoading(state, status) {
+        state.isLoading = status;
+    },
+    setError(state, status) {
+        state.isError = status;
+    },
 };
 
 const actions = {
-    //   getUserDetail({ commit }, params) {
-    //     return new Promise((resolve, reject) => {
-    //       ApiService.get("/user/getUser", params)
-    //         .then(async ({ data }) => {
-    //           const user = data.data[0];
-    //           await commit("setUserDetails", user);
-    //           resolve(data);
-    //         })
-    //         .catch((err) => {
-    //           console.error("Error fetching users:", err);
-    //           reject(err);
-    //         });
-    //     });
-    //   },
+    async getUsers({ commit }, search) {
+        const keyword = search?.keyword;
+        const length = search?.length || 10; // default length jika tidak disediakan
+        const page = search?.page || 1; // default page jika tidak disediakan
+
+        commit('setUsers', []); // Kosongkan data kontes sebelum memulai pencarian
+        commit('setLoading', true);
+
+        try {
+            let url = `/user/getUser?length=${length}&page=${page}`;
+            if (keyword) {
+                url += `&search=${keyword}`;
+            }
+            const response = await ApiService.get(url);
+            commit('setUsers', response.data.data || []);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            commit('setLoading', false);
+            commit('setError', true);
+        } finally {
+            commit('setLoading', false);
+        }
+    },
     async getUserDetail({ commit }, params) {
         try {
             const response = await ApiService.get('/user/getUser', params);
@@ -148,10 +168,10 @@ const actions = {
             });
         }
     },
-    async getRegistration({ commit }, id) {        
+    async getRegistration({ commit }, id) {
         try {
             const response = await ApiService.get(
-                `/competition/findCompetitionRegistration?search=${id}`
+                `/competition/findCompetitionRegistration?search=${id}`,
             );
             const extractedData = response.data.data.map((item) => ({
                 id: item.id,
@@ -162,7 +182,7 @@ const actions = {
             console.error('Error fetching user details:', error);
         }
     },
-    async submission({commit}, data) {
+    async submission({ commit }, data) {
         try {
             await ApiService.post('/competition/submission', data, {
                 headers: {
@@ -187,19 +207,16 @@ const actions = {
                 icon: 'error',
             });
         }
-    }
+    },
 };
 
 const getters = {
-    userDetail(state) {
-        return state.userDetail;
-    },
-    userEmail(state) {
-        return state.userEmail;
-    },
-    registration(state) {
-        return state.registration;
-    },
+    users:(state) => state.users,
+    userDetail: (state) => state.userDetail,
+    userEmail:(state) => state.userEmail,
+    registration:(state) => state.registration,
+    isError: (state) => state.isError,
+    isLoading: (state) => state.isLoading,
 };
 
 export default {

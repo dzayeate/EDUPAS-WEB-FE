@@ -10,19 +10,24 @@
                     :image="member.image"
                     :name="member.name"
                     :status="member.status"
-                />
-                <h1 v-if="!contests?.mentor">Belum ada sponsor</h1>
+                />                
             </div>
+            <h1 v-if="!contests?.sponsor" class="text-center font-bold text-lg"><span><v-icon name="bi-info-circle" /></span> Belum ada organize</h1>
         </div>
     </div>
 </template>
 
 <script>
 import CardPerson from '@/components/card/CardPerson.vue';
+import { OhVueIcon, addIcons } from 'oh-vue-icons';
+import { BiInfoCircle } from 'oh-vue-icons/icons';
+
+addIcons(BiInfoCircle);
 
 export default {
     components: {
         CardPerson,
+        VIcon: OhVueIcon
     },
     computed: {
         contestDetail() {

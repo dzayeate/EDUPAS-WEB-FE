@@ -2,6 +2,7 @@
     <div class="flex flex-row justify-between border-b-2 pb-5 mb-6">
         <h3 class="font-medium text-2xl font-openSans">Kompetisi</h3>
         <button
+            v-if="!shouldHideButton"
             @click="addCompetition"
             class="bg-colorPurple text-white text-sm rounded-md flex items-center px-3 py-2"
         >
@@ -43,6 +44,15 @@ export default {
         VIcon: OhVueIcon,
         TableView,
         CompetitionWizard,
+    },
+    computed: {
+        userDetail() {
+            return this.$store.getters['user/userDetail'];
+        },
+        shouldHideButton() {
+            // Cek apakah role adalah Admin atau Sponsor
+            return ['Admin', 'Sponsor'].includes(this.userDetail.role.name);
+        }
     },
     methods: {
         addCompetition() {

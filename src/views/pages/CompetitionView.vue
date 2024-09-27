@@ -58,28 +58,21 @@ export default {
                 'Title Content',
             ],
             search: {
-                page: 1,
+                page: '',
                 length: 0,
                 keyword: ''
             }
         };
     },
     async mounted() {
-        await this.getData();        
+        await this.$store.dispatch('contest/getContest', this.search);        
     },
     computed: {
         contests() {
             return this.$store.getters['contest/getContest'];
         },
     },
-    methods: {
-        async getData() {
-            try {
-                await this.$store.dispatch('contest/getContest', this.search);                
-            } catch (err) {
-                console.log(err);
-            }
-        },
+    methods: {        
         navigateToCompetition(value) {
             this.$router.push({
                 name: 'CompetitionView',

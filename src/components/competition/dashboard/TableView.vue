@@ -17,11 +17,27 @@
                     </tr>
                 </thead>
                 <tbody class="text-neutral-700 text-sm font-normal">
+                    <tr v-if="isLoading">
+                        <td colspan="100%" class="py-4 px-6 text-center italic">
+                            Loading.....
+                        </td>
+                    </tr>
+                    <tr v-else-if="isError">
+                        <td colspan="100%" class="py-4 px-6 text-center italic">
+                            Gagal memuat data
+                        </td>
+                    </tr>
+                    <tr v-else-if="contests.length === 0 && !isLoading">
+                        <td colspan="100%" class="py-4 px-6 text-center italic">
+                            Belum Ada Kompetisi
+                        </td>
+                    </tr>
                     <tr
-                        v-for="(row, rowIndex) in rows"
+                        v-else
+                        v-for="(row, rowIndex) in contests"
                         :key="rowIndex"
                         class="border-b border-[#C2C2C2] hover:bg-gray-100"
-                    >
+                    >                        
                         <td
                             v-for="(column, colIndex) in columns"
                             :key="colIndex"
@@ -38,8 +54,8 @@
                             </span>
                             <span v-else-if="column.field === 'aktivasi'">
                                 <ToggleSwitch
-                                    :isActive="row.isActive"
-                                    @toggle="handleUpdate(row)"
+                                    :isActive="row.isActive"                                    
+                                    @toggle="handleUpdate(row, $event)"
                                 />
                             </span>
                             <span v-else>
@@ -50,19 +66,21 @@
                             class="py-3 px-6 text-left whitespace-nowrap flex gap-2"
                         >
                             <button
-                                @click="editRow(row)"
+                                v-if="!shouldHideIcons"
+                                @click="handleEdit(row)"
                                 class="text-green-500 hover:text-green-700"
                             >
                                 <v-icon name="fa-edit" />
                             </button>
                             <button
+                                v-if="!shouldHideIcons"
                                 @click="deleteRow(row)"
                                 class="text-red-500 hover:text-red-700"
                             >
                                 <v-icon name="fa-trash" />
                             </button>
                             <button
-                                @click="deleteRow(row)"
+                                @click="handleView(row)"
                                 class="text-blue-500 hover:text-blue-700"
                             >
                                 <v-icon name="fa-eye" />
@@ -78,6 +96,7 @@
 import { OhVueIcon, addIcons } from 'oh-vue-icons';
 import { BiBookmarkFill, FaEdit, FaTrash, FaEye } from 'oh-vue-icons/icons';
 import ToggleSwitch from '@/components/toggle/ToggleSwitch.vue';
+import router from '@/router';
 
 addIcons(BiBookmarkFill, FaEdit, FaTrash, FaEye);
 
@@ -89,45 +108,57 @@ export default {
     data() {
         return {
             columns: [
-                { label: 'No', field: 'id' },
+                { label: 'No', field: 'no' },
                 { label: 'Nama', field: 'name' },
                 { label: 'Jadwal', field: 'jadwal' },
                 { label: 'Aktivasi', field: 'aktivasi' },
                 { label: 'Status', field: 'status' },
             ],
-            rows: [
-                {
-                    id: 1,
-                    name: 'John Doe',
-                    jadwal: 30,
-                    status: 'Selesai',
-                    isActive: true,
-                },
-                {
-                    id: 2,
-                    name: 'Jane Doe',
-                    jadwal: 25,
-                    status: 'Berlangsung',
-                    isActive: true,
-                },
-                {
-                    id: 3,
-                    name: 'Sam Smith',
-                    jadwal: 22,
-                    status: 'Batal',
-                    isActive: false,
-                },
-            ],
+            contests: []            
         };
     },
+    computed: {
+        userDetail() {
+            return this.$store.getters['user/userDetail'];
+        },
+        shouldHideIcons() {
+            // Cek apakah role adalah Admin atau Sponsor
+            return ['Admin', 'Sponsor'].includes(this.userDetail.role.name);
+        },
+        isLoading() {
+            return this.$store.getters['contest/isLoading'];
+        },
+        isError() {
+            return this.$store.getters['contest/isError'];
+        }
+    },
+    async mounted() {
+        await this.$store.dispatch('contest/getContest');
+        
+        const fetchedContests = this.$store.getters['contest/contests'].map((contest, index) => ({
+            no: index + 1,
+            jadwal: this.formatDate(contest.startDate) + ' - ' + this.formatDate(contest.endDate),
+            isActive: contest.isActive !== undefined ? contest.isActive : false,
+            ...contest,
+        }));
+        this.contests = fetchedContests; // Store fetched data in local state
+    },    
     methods: {
-        handleUpdate(row) {
-            row.isActive = !row.isActive;
-            console.log('Row updated:', row);
-            // Lakukan update state atau panggil API jika diperlukan
+        handleUpdate(row, newState) {
+            row.isActive = newState; // Update the state of the toggle            
         },
         handleEdit(row) {
-            console.log('Edit row:', row);
+            router.push({
+                name: 'Competition Dashboard',
+                query: { type: "registration", id: row.id },
+            })                        
+            // Buka modal edit atau lakukan aksi lain
+        },
+        handleView(row) {
+            router.push({
+                name: 'Competition Dashboard',
+                query: { type: "registration", id: row.id },
+            })                        
             // Buka modal edit atau lakukan aksi lain
         },
         handleDelete(row) {
@@ -146,8 +177,34 @@ export default {
                     return 'bg-gray-100 text-gray-800 border border-gray-400';
             }
         },
+        formatDate(v) {
+            // Membuat objek Date dari string input
+            const date = new Date(v);
+
+            // Mendefinisikan nama bulan dalam bahasa Indonesia
+            const months = [
+                'Januari',
+                'Februari',
+                'Maret',
+                'April',
+                'Mei',
+                'Juni',
+                'Juli',
+                'Agustus',
+                'September',
+                'Oktober',
+                'November',
+                'Desember',
+            ];
+
+            // Mengambil tanggal dan nama bulan
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+
+            // Mengembalikan string dalam format "10 Juni"
+            return `${day} ${month} ${year}`;
+        }
     },
 };
 </script>
-
-<style scoped></style>

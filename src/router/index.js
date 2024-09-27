@@ -109,10 +109,10 @@ const routes = [
                     ) {
                         next();
                     } else {
-                        next(from.fullPath); // atau rute lain jika pengguna tidak memiliki akses
+                        router.go(-1) // atau rute lain jika pengguna tidak memiliki akses
                     }
                 } catch (error) {
-                    next(from.fullPath); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
+                    router.go(-1); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
                 }
             }
         },
@@ -152,10 +152,10 @@ const routes = [
                             if (roleName === 'Admin') {
                                 next();
                             } else {
-                                next(from.fullPath); // atau rute lain jika pengguna tidak memiliki akses
+                                router.go(-1); // atau rute lain jika pengguna tidak memiliki akses
                             }
                         } catch (error) {
-                            next(from.fullPath); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
+                            router.go(-1); // atau rute lain jika ada kesalahan dalam mendapatkan detail pengguna
                         }
                     }
                 },
