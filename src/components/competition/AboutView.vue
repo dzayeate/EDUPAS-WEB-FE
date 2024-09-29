@@ -1,19 +1,17 @@
 <template>
-    <div v-if="isLoading" class="w-ful h-96 flex items-center">
-        <v-icon
-        name="ri-refresh-line"
-        class="text-gray-400 items-center w-full"
-        speed="slow"
-        scale="4"
-        animation="spin"
-        />
+    <div v-if="isLoading" class="w-ful h-96 flex items-center justify-center">
+        <div class="w-16">
+            <img src="../../assets//loading/loading.svg">
+        </div>
     </div>
     <div v-else-if="isError"  class="w-ful h-96 flex items-center justify-center gap-1 text-lg italic text-red-600">
-        <v-icon name="bi-info-circle"/>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+        </svg>        
         <h2>Gagal Memuat Data</h2>
     </div>
     <div v-else>
-        <div class="w-full py-3">
+        <div class="w-full py-3">                        
             <img class="object-cover w-full" :src="bannerUrl" alt="" />
         </div>
         <div class="flex flex-col py-[12px]">
@@ -153,10 +151,10 @@
                                 </h3>
                                 <div
                                     v-if="
-                                        contestDetail?.organize &&
-                                        contestDetail.organize.length > 0
+                                        contestDetail?.organizer &&
+                                        contestDetail.organizer.length > 0
                                     "
-                                    v-for="(v, i) in contestDetail.organize"
+                                    v-for="(v, i) in contestDetail.organizer"
                                     :key="i"
                                     class="flex items-center gap-2"
                                 >
@@ -251,10 +249,10 @@
                                 Register
                             </button>
                         </div>
-                        <p class="flex justify-center gap-1" v-if="messageRegister">
-                            <span>
-                                <v-icon name="bi-info-circle" />
-                            </span>
+                        <p class="flex justify-center items-center gap-1" v-if="messageRegister">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                            </svg>
                             {{ messageRegister }}
                         </p>
                     </div>
@@ -266,17 +264,10 @@
 
 <script>
 import HeaderView from '@/components/header/HeaderView.vue';
-import Loading from 'vue3-loading-overlay';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { RiRefreshLine, BiInfoCircle } from 'oh-vue-icons/icons';
-
-addIcons(RiRefreshLine, BiInfoCircle);
 
 export default {
     components: {
-        HeaderView,
-        Loading,
-        VIcon: OhVueIcon,
+        HeaderView,                
     },
     data() {
         return {

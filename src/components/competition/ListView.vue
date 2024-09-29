@@ -63,33 +63,43 @@
             <option value="DE">Germany</option>
         </select>
     </div>
-    <div class="container mx-auto mb-12">        
-        <v-icon
-            v-if="isLoading"
-            name="ri-refresh-line"
-            class="text-gray-400 my-10 w-full"
-            speed="slow"
-            scale="4"
-            animation="spin"
-        />
+    <div class="container mx-auto mb-12">
+        <div v-if="isLoading" class="w-16 my-10 mx-auto">
+            <img src="../../assets//loading/loading.svg">
+        </div>                
         <div v-else-if="isError" class="text-center">
             <h2
-                class="px-3 py-2 bg-red-600 w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+                class="px-3 py-2 bg-red-600 w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16 flex items-center gap-2"
             >
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                </span>
                 Gagal memuat data
             </h2>
         </div>
         <div v-else-if="contests.length === 0 && searchPerformed" class="text-center">
             <h2
-                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16 flex items-center gap-2"
             >
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                </span>
                 Data tidak ditemukan
             </h2>
         </div>
         <div v-else-if="contests.length === 0 && !searchPerformed"  class="text-center">
             <h2
-                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16"
+                class="px-3 py-2 bg-customBlue w-fit text-white rounded-lg font-light italic text-lg mx-auto my-16 flex items-center gap-2"
             >
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                </span>
                 Belum ada kompetisi
             </h2>
         </div>
@@ -109,16 +119,10 @@
 
 <script>
 import EventCard from '../card/EventCard.vue';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { RiRefreshLine } from 'oh-vue-icons/icons';
-
-addIcons(RiRefreshLine);
-
 
 export default {
     components: {
-        EventCard,
-        VIcon: OhVueIcon
+        EventCard,        
     },
     data() {
         return {

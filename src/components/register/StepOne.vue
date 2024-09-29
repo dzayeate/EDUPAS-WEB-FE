@@ -362,7 +362,7 @@ export default {
         if (this.userEmail) {
           Swal.fire({
             title: "Warning",
-            text: "Email already takken.",
+            text: "Email sudah digunakan",
             icon: "warning",
           });
           setTimeout(() => {

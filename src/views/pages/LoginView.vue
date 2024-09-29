@@ -161,17 +161,8 @@ export default {
         togglePasswordVisibility() {
             this.showPassword = !this.showPassword;
         },
-        async handleSubmit() {
-            try {                
-                await this.$store.dispatch('auth/postLogin', this.data);
-            } catch (error) {
-                // Handle error (e.g., display error message)
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Email or password wrong!',
-                    icon: 'error',
-                });
-            }
+        handleSubmit() {
+            this.$store.dispatch('auth/postLogin', this.data);            
         },
     },
 };

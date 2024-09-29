@@ -1,12 +1,6 @@
 <template>
-    <div v-if="isLoading" class="w-ful h-96 flex items-center">
-        <v-icon
-            name="ri-refresh-line"
-            class="text-gray-400 items-center w-full"
-            speed="slow"
-            scale="4"
-            animation="spin"
-        />
+    <div v-if="isLoading" class="w-16 my-10 mx-auto">
+        <img src="../../assets//loading/loading.svg">
     </div>
     <div v-else class="py-5">
         <h2 class="font-medium text-[28px] pb-5">Detail Kompetisi</h2>
@@ -119,16 +113,11 @@
 <script>
 import HeaderView from '@/components/header/HeaderView.vue';
 import Loading from 'vue3-loading-overlay';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { RiRefreshLine, BiInfoCircle } from 'oh-vue-icons/icons';
-
-addIcons(RiRefreshLine, BiInfoCircle);
 
 export default {
     components: {
         HeaderView,
-        Loading,
-        VIcon: OhVueIcon,
+        Loading,        
     },
     data() {
         return {
