@@ -6,11 +6,13 @@ import router from '@/router';
 // export const POST_LOGIN = "postLogin";
 
 const state = {
-    isLoading: false
+    isLoading: false,
+    isError: false,
 };
 
 const getters = {
     isLoading: (state) => state.isLoading,
+    isError: (state) => state.isError,
 };
 
 const actions = {
@@ -29,31 +31,60 @@ const actions = {
                 router.push('/login');
             });
         } catch (error) {
-            Swal.fire({
-                title: 'Error',
-                text: 'Maaf, Registrasi Gagal',
-                icon: 'error',
-            });
+            const codeErr = err.response.data.status;
+            if (codeErr == 500) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Maaf, Sedang Gangguan',
+                    icon: 'error',
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Maaf, Registrasi Gagal',
+                    icon: 'error',
+                });
+            }
         }
-    },    
+    },
     async postLogin({ dispatch, commit }, params) {
         try {
             commit('SET_LOADING', true);
-            
+
             const { data } = await ApiService.post('/auth/login', params);
             const userDetails = data.data;
             const token = userDetails.token;
 
             localStorage.setItem('token', token);
-            // Cookies.set('token', token, { expires: 7 }); // Token expires in 7 days            
-            
-            await router.push('/competition')
-            
+            // Cookies.set('token', token, { expires: 7 }); // Token expires in 7 days
+
+            await router.push('/competition');
+
             return data;
         } catch (err) {
-            throw err;
+            commit('SET_LOADING', false);
+            const codeErr = err.response.data.status;
+            if (codeErr == 400) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'User Tidak Ditemukan',
+                    icon: 'error',
+                });
+            } else if (codeErr == 401) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Password Salah',
+                    icon: 'error',
+                });
+            } else if (codeErr == 500) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Maaf, Sedang Gangguan',
+                    icon: 'error',
+                });
+            }
         } finally {
-            commit('SET_LOADING', false);                        
+            commit('SET_LOADING', false);
         }
     },
 };

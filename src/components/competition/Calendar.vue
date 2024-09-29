@@ -42,15 +42,10 @@
 
 <script>
 import Datepicker from 'vue3-datepicker';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { BiCircleFill } from 'oh-vue-icons/icons';
-
-addIcons(BiCircleFill)
 
 export default {
     components: {
-        Datepicker,
-        VIcon: OhVueIcon
+        Datepicker,        
     },
     data() {
         return {

@@ -1,7 +1,6 @@
 import axios from "axios";
 import JwtService from "./jwt.service";
 import config from "@/ConfigProvider";
-// import axiosCookieJarSupport from "axios-cookiejar-support";
 import { CookieJar } from "tough-cookie";
 
 const ApiService = {

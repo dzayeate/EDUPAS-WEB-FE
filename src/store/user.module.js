@@ -94,6 +94,11 @@ const actions = {
                 .catch((err) => {
                     console.error('Error fetching users:', err);
                     reject(err);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Maaf, Sedang Gangguan',
+                        icon: 'error',
+                    });
                 });
         });
     },

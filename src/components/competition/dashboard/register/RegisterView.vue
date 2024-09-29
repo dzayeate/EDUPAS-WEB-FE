@@ -35,11 +35,15 @@
                 <div class="flex flex-row gap-4 mb-[8px]">
                     <button class="flex justify-between custom-input w-3/12 text-gray-400">
                         Tambah Field
-                        <v-icon name="fa-plus-circle" class="text-colorPurple"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-colorPurple">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>                        
                     </button>
                     <button class="flex justify-between custom-input w-4/12 text-gray-400">
                         Tambah Field Upload
-                        <v-icon name="fa-plus-circle" class="text-colorPurple"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-colorPurple">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
                     </button>                                        
                 </div>                
                 <div class="flex justify-end">
@@ -54,15 +58,10 @@
     </div>
 </template>
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { FaCloudUploadAlt, FaUser, HiSolidUserGroup, FaPlusCircle } from 'oh-vue-icons/icons';
 import InputItem from '@/components/competition/dashboard/InputItem.vue';
 
-addIcons(FaCloudUploadAlt, FaUser, HiSolidUserGroup, FaPlusCircle);
-
 export default {
-    components: {
-        VIcon: OhVueIcon,
+    components: {        
         InputItem,
     },
     data() {

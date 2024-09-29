@@ -5,7 +5,10 @@
             :key="index"
             class="flex items-center pb-2"
         >
-            <v-icon :name="iconName" />
+            <!-- <v-icon :name="iconName" /> -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
             <input
                 type="text"
                 v-model="items[index]"
@@ -14,23 +17,17 @@
                 :placeholder="placeholderText"
             />
         </div>
-        <button v-if="!shouldHideButton" @click="addItem" class="flex items-center text-blue-500 mt-2">
-            <v-icon name="fa-plus" scale="0.7" class="mr-1" />
+        <button v-if="!shouldHideButton" @click="addItem" class="flex items-center text-blue-500 mt-2 gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
             Tambah {{ itemType }}
         </button>
     </div>
 </template>
 
 <script>
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { FaUser, FaPlus } from 'oh-vue-icons/icons';
-
-addIcons(FaUser, FaPlus);
-
-export default {
-    components: {
-        VIcon: OhVueIcon,
-    },
+export default {    
     props: {
         iconName: {
             type: String,

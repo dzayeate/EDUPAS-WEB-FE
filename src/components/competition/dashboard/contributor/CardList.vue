@@ -13,7 +13,9 @@
                 v-if="!hideButton"
                 class=" w-40 shadow-card rounded-lg p-4 m-2 flex items-center justify-center"
             >
-                <v-icon name="bi-plus" scale="4" class="text-gray-400"/>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-16 text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
             </div>
         </div>
     </div>
@@ -21,15 +23,10 @@
 
 <script>
 import Card from './Card.vue';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { FaPlus, BiPlus } from 'oh-vue-icons/icons';
-
-addIcons(FaPlus, BiPlus)
 
 export default {
     components: {
-        Card,
-        VIcon: OhVueIcon
+        Card,        
     },
     props: {
         title: {

@@ -14,17 +14,20 @@
                     <p class="font-medium text-sm flex justify-between">
                         Total Peserta
                         <span>
-                            <v-icon
-                                name="oi-kebab-horizontal"
-                                class="rotate-90"
-                        /></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                            </svg>
+                        </span>
                     </p>
                     <div class="font-poppins">
                         <p class="text-xs text-gray-400">Deskripsi</p>
                         <p class="text-sm font-medium mt-3 flex justify-between items-center">
                             {{ doughnutData.datasets[0].data[0] }} Peserta
-                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5">
-                                <v-icon name="hi-solid-arrow-sm-up" class="text-[#B8DBCA]" scale="0.8"/> 7.2%
+                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5 flex items-center">                                
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-3 text-[#B8DBCA]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                                </svg>
+                                7.2%
                             </span>
                         </p>
                     </div>
@@ -38,17 +41,19 @@
                     <p class="font-medium text-sm flex justify-between">
                         Total Audience
                         <span>
-                            <v-icon
-                                name="oi-kebab-horizontal"
-                                class="rotate-90"
-                        /></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                            </svg>
+                        </span>
                     </p>
                     <div class="font-poppins">
                         <p class="text-xs text-gray-400">Deskripsi</p>
                         <p class="text-sm font-medium mt-3 flex justify-between items-center">
                             {{ doughnutData2.datasets[0].data[0] }} Audience
-                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5">
-                                <v-icon name="hi-solid-arrow-sm-up" class="text-[#B8DBCA]" scale="0.8"/> 7.2%
+                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-3 text-[#B8DBCA]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                                </svg> 7.2%
                             </span>
                         </p>
                     </div>
@@ -62,17 +67,19 @@
                     <p class="font-medium text-sm flex justify-between">
                         Gender Audience
                         <span>
-                            <v-icon
-                                name="oi-kebab-horizontal"
-                                class="rotate-90"
-                        /></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                            </svg>
+                        </span>
                     </p>
                     <div class="font-poppins">
                         <p class="text-xs text-gray-400">Deskripsi</p>
                         <p class="text-sm font-medium mt-3 flex justify-between items-center">
                             {{ doughnutData3.datasets[0].data[0] }} Kompetisi
-                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5">
-                                <v-icon name="hi-solid-arrow-sm-up" class="text-[#B8DBCA]" scale="0.8"/> 7.2%
+                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-3 text-[#B8DBCA]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                                </svg> 7.2%
                             </span>
                         </p>
                     </div>
@@ -86,17 +93,19 @@
                     <p class="font-medium text-sm flex justify-between">
                         Jumlah Pendaftar
                         <span>
-                            <v-icon
-                                name="oi-kebab-horizontal"
-                                class="rotate-90"
-                        /></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                            </svg>
+                        </span>
                     </p>
                     <div class="font-poppins">
                         <p class="text-xs text-gray-400">Deskripsi</p>
                         <p class="text-sm font-medium mt-3 flex justify-between items-center">
                             {{ doughnutData4.datasets[0].data[0] }} Pendaftar
-                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5">
-                                <v-icon name="hi-solid-arrow-sm-up" class="text-[#B8DBCA]" scale="0.8"/> 7.2%
+                            <span class="bg-[#F5F5FF] text-[#20573D] rounded-md px-[0.3rem] py-[0.2rem] mr-5 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-3 text-[#B8DBCA]">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                                </svg> 7.2%
                             </span>
                         </p>
                     </div>
@@ -134,7 +143,9 @@
     >
         <div class="flex flex-row justify-between -mb-5 items-center">
             <h2 class="font-medium text-base font-poppins">Total Usia Audience</h2>
-            <v-icon name="oi-kebab-horizontal" class="rotate-90" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+            </svg>
         </div>
         <BarChart :data="barData" class="w-auto" />
     </div>
@@ -143,17 +154,12 @@
 <script>
 import DoughnutChart from './DoughnutChart.vue';
 import BarChart from './BarChart.vue';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { OiKebabHorizontal, HiSolidArrowSmUp} from 'oh-vue-icons/icons';
 import ApiService from '@/store/api.service';
-
-addIcons(OiKebabHorizontal, HiSolidArrowSmUp);
 
 export default {
     components: {
         DoughnutChart,
-        BarChart,
-        VIcon: OhVueIcon,
+        BarChart,        
     },
     computed: {
         userDetail() {
@@ -231,7 +237,7 @@ export default {
         if (this.userDetail?.role.name === "Admin" || this.userDetail?.role.name === "Eo") {
             const response = await ApiService.get('admin/team');
             const filteredData = response.data.data.filter(item => item.month === currentMonth);
-            this.participants = filteredData[0].totalParticipants;                                                            
+            this.participants = filteredData[0]?.totalParticipants || 0;                                                            
         }
     }
 };

@@ -107,17 +107,11 @@
 
 <script>
 import QRCode from 'qrcode';
-import { OhVueIcon, addIcons } from 'oh-vue-icons';
-import { FaCloudUploadAlt, FaUser, HiSolidUserGroup, FaPlusCircle } from 'oh-vue-icons/icons';
 import ApiService from '@/store/api.service';
 import Swal from 'sweetalert2';
 
-addIcons(FaCloudUploadAlt, FaUser, HiSolidUserGroup, FaPlusCircle);
 
-export default {
-    components: {
-        VIcon: OhVueIcon,
-    },
+export default {    
     props: {
         isEditing: {
             type: Boolean,
